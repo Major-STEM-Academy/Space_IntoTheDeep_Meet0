@@ -108,9 +108,9 @@ public abstract class AutoCommon extends LinearOpMode {
 
     public void initArm() {
         rotator = hardwareMap.get(DcMotor.class, "rotator");
-        lifter = hardwareMap.get(DcMotor.class, "lifter");
+        //lifter = hardwareMap.get(DcMotor.class, "lifter");
         rotator.setPower(0);
-        lifter.setPower(0);
+        //lifter.setPower(0);
     }
     public void initMotor(){
         // Initialize the drive system variables.
@@ -308,7 +308,7 @@ public abstract class AutoCommon extends LinearOpMode {
                 telemetry.addData("- Position", "%.0f / %.0f", x, y);
                 telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-                if (init_pos.equals("blue near") || init_pos.equals("red far")){
+                if (init_pos.equals("blue near") || init_pos.equals("red near")){
                     if (x >450) {
                         result = "middle";
                         break;
@@ -318,11 +318,21 @@ public abstract class AutoCommon extends LinearOpMode {
                     }
                 }
                 else {
+                    /*
                     if (x < 150) {
                         result = "left";
                         break;
                     } else {
                         result = "middle";
+                        break;
+                    }
+
+                     */
+                    if (x >450) {
+                        result = "middle";
+                        break;
+                    } else {
+                        result = "left";
                         break;
                     }
                 }
@@ -583,13 +593,14 @@ public abstract class AutoCommon extends LinearOpMode {
                 factor = 1.0;
             else
                 factor = diffYaw / 3;
+            factor = 1.0;
             driveMotors(
                     (int)(tickDirection * ticks),
                     (int)(tickDirection * ticks),
                     -(int)(tickDirection * ticks),
                     -(int)(tickDirection * ticks),
                     power * factor, false, 0);
-            sleep(10);
+            sleep(30);
             currentYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             timeCurrent = System.currentTimeMillis();
             diffYaw = Math.abs(currentYaw - targetYawDegree);

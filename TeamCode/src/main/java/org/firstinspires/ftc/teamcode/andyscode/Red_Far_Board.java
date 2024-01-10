@@ -30,20 +30,6 @@
 package org.firstinspires.ftc.teamcode.andyscode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
-
-import java.util.List;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -64,8 +50,8 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name=" Auto Drive: Blue Near", group="Robot")
-public class Blue_Near_Board extends AutoCommon {
+@Autonomous(name=" Auto Drive: Red Far ", group="Robot")
+public class Red_Far_Board extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -81,8 +67,8 @@ public class Blue_Near_Board extends AutoCommon {
         // Step 1:  Drive forward for 3 seconds
         grabberTilt.setPosition(0.1);
 
-        String line = detectTeamPropLine("blue near");
-        //line = "middle";
+        String line = detectTeamPropLine("red far");
+        //line = "left";
         visionPortal.close();
         if (line.equals("middle")) {
             //driveToMiddleLine();
@@ -91,17 +77,6 @@ public class Blue_Near_Board extends AutoCommon {
             dropPixelOnLine();
             //forward(0.2, 1000);
             encoderDrive(0.1,   -8, -8, 4.0);
-            //encoderDrive(0.2,   27, 27, 4.0);
-            //encoderDrive(1,   -5, 5, 4.0);
-            //shiftLeft(0.2, 2000);
-            //turn(-0.5, 0.3,1260);
-            //turnToTargetYaw(60+yaw0, 0.4, 5000);
-            //encoderDrive(0.1,  12,  12, 5.0);
-            //turnToTargetYaw(-90+yaw0, 0.6, 8000);
-            //encoderDrive(0.5,   , -6, 4.0);
-            //driveToBackBoardNearSide(2);
-            //driveToBackBoardByAprilTag(2);
-            //encoderDrive(0.1,  -45,  -45, 5.0);
             //backward(0.2, 5000);
             //dropPixelOnBoard();
         }
@@ -115,9 +90,6 @@ public class Blue_Near_Board extends AutoCommon {
             dropPixelOnLine();
             encoderDrive(0.1,  -10,  -10, 5.0);
 
-            //turnToTargetYaw2(90+yaw0, 0.6, 5000);
-            //driveToBackBoardByAprilTag(1);
-            //encoderDrive(0.1,  -48,  -48, 5.0);
             //turnToTargetYaw(yaw0, 0.4, 5000);
             //encoderDrive(0.2,  -25,  -25, 5.0);
             //turnToTargetYaw(50+yaw0, 0.4, 5000);
@@ -144,29 +116,6 @@ public class Blue_Near_Board extends AutoCommon {
 
             //turnToTargetYaw(-40+yaw0, 0.8, 5000);
             encoderDrive(0.1,  -17,  -17, 5.0);
-            /*
-            encoderDrive(0.3,  -17,  -17, 5.0);
-            //turn(0.1, -0.5,1000);
-            turnToTargetYaw(-50+yaw0, 0.4, 5000);
-            encoderDrive(0.3,  -17,  -17, 5.0);
-
-            */
-            //sleep(100);
-            //encoderDrive(0.3,  -32,  -32, 5.0);
-            //sleep(100);
-            //turnToTargetYaw(yaw0, 0.4, 5000);
-            //sleep(100);
-            //encoderDrive(0.3,  33,  33, 5.0);
-            //sleep(100);
-            //turnToTargetYaw2(90+yaw0, 0.4, 5000);
-            //dropPixelOnLine();
-            //forward(0.2, 2500);
-            //turn(-0.4, 0.1, 2200);
-            //driveToBackBoardNearSide(3);
-            //backward(0.2, 4500);
-            //driveToBackBoardByAprilTag(3);
-            //encoderDrive(0.2,  -48,  -48, 5.0);
-            //dropPixelOnBoard();
         }
 
         //visionPortal.close();

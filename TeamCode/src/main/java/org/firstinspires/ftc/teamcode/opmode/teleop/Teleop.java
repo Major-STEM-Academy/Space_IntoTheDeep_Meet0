@@ -33,7 +33,6 @@ public class Teleop extends LinearOpMode {
         rotator = hardwareMap.dcMotor.get("rotator");
         lifter = hardwareMap.dcMotor.get("lifter");
 
-
         launchServo = hardwareMap.servo.get("launcher");
         grabberTilt = hardwareMap.servo.get("grabberTilt");
         grabberR = hardwareMap.servo.get("grabberR");
@@ -61,7 +60,7 @@ public class Teleop extends LinearOpMode {
             double turn = -gamepad1.right_stick_x;
 
 
-            double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1);
+            double denominator = 1.0 * Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1);
             double frontLeftPower = (vertical + horizontal + turn) / denominator;
             double frontRightPower = (vertical - horizontal - turn) / denominator;
             double backLeftPower = (vertical - horizontal + turn) / denominator;
@@ -116,11 +115,11 @@ public class Teleop extends LinearOpMode {
 
             // arm rotation
             if (gamepad2.a){
-                RotateArm(-100, 1.0, 2000);
+                RotateArm(-100, 1.0, 200);
                 rotator.setPower(0.1);
             }
             else if(gamepad2.b){
-                RotateArm(100, 1.0, 2000);
+                RotateArm(100, 1.0, 200);
                 rotator.setPower(0.1);
             }
 
