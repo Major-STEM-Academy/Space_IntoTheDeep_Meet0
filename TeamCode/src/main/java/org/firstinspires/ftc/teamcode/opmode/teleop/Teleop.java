@@ -48,6 +48,7 @@ public class Teleop extends LinearOpMode {
         long timeBegin, timeCurrent;
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
 
@@ -56,11 +57,10 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
             double vertical = gamepad1.left_stick_y;        // Remember, Y stick value is reversed
-            double horizontal = gamepad1.left_stick_x;       // Counteract imperfect strafing
+            double horizontal = gamepad1.left_stick_x;      // Counteract imperfect strafing
             double turn = -gamepad1.right_stick_x;
 
-
-            double denominator = 1.0 * Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1);
+            double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1);
             double frontLeftPower = (vertical + horizontal + turn) / denominator;
             double frontRightPower = (vertical - horizontal - turn) / denominator;
             double backLeftPower = (vertical - horizontal + turn) / denominator;
@@ -68,8 +68,6 @@ public class Teleop extends LinearOpMode {
 
             // robot.setDrivePower(vertical+turn-horizontal,vertical-turn+horizontal,vertical+turn+horizontal,vertical-turn-horizontal);
             // fl, fr, bl, br
-
-
             frontLeftMotor.setPower(frontLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backLeftMotor.setPower(backLeftPower);
