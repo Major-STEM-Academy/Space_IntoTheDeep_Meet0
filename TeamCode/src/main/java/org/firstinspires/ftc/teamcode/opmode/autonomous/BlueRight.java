@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
+
 /*
  * This OpMode illustrates the concept of driving a path based on time.
  * The code is structured as a LinearOpMode
@@ -63,25 +65,32 @@ public class BlueRight extends AutoCommon {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        tilt.setPosition(BotCoefficients.tiltUp);
+        extendSliderToHighBar();
+        sleep(1000);
         //drive to bars
-        encoderDrive(0.2,  31,  31, 5.0);
+        encoderDrive(0.2,  30,  30, 5.0);
 
         //extend linear slider to high bar
-        extendSliderToHighBar();
-
+        //extendSliderToHighBar();
+        //sleep(2000);
         //lower linear slider and open grabber
         hangSpeciman();
-        //back a little bit
-        encoderDrive(0.2,  -10,  -10, 5.0);
-        // strafe to right
-        strafe_encoder(0.4, 20, 20, 5.0);
-        // drive forward
-        encoderDrive(0.2,  31,  31, 5.0);
-        // strafe to right
-        strafe_encoder(0.4, 20, 20, 5.0);
-        // drive backward to push sample into parking area
-        encoderDrive(0.2,  -60,  -60, 5.0);
         sleep(2000);
+        resetSliderGrabber();
+
+        //back a little bit
+        encoderDrive(0.2,  -28,  -28, 5.0);
+        // strafe to left
+        strafe_encoder(0.4, 70, 70, 5.0);
+        sleep(1000);
+        // drive forward
+        //encoderDrive(0.2,  31,  31, 5.0);
+        // strafe to right
+        //strafe_encoder(0.4, 20, 20, 5.0);
+        // drive backward to push sample into parking area
+        //encoderDrive(0.2,  -60,  -60, 5.0);
+
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
         //grabber.setPosition(0);
         // Step 1:  Drive forward for 3 seconds

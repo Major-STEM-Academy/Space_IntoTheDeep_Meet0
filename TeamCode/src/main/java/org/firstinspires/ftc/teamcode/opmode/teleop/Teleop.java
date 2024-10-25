@@ -35,6 +35,7 @@ public class Teleop extends LinearOpMode {
 */
     private ElapsedTime runtime = new ElapsedTime();
     Servo grabber = null;
+    Servo tilt = null;
     //Servo grabberTilt = null;
     //Servo grabberR = null;
     //Servo grabberL = null;
@@ -76,6 +77,9 @@ public class Teleop extends LinearOpMode {
         grabber = hardwareMap.servo.get("grabber");
         grabber.setPosition(BotCoefficients.grabberClose);
 
+        tilt = hardwareMap.servo.get("tilt");
+        tilt.setPosition(BotCoefficients.tiltDown);
+
         /*
         DcMotor lifter = hardwareMap.dcMotor.get("lifter");
 
@@ -115,7 +119,7 @@ public class Teleop extends LinearOpMode {
             double horizontal = gamepad1.left_stick_x;
             double turn = -gamepad1.right_stick_x*0.8;
 
-            double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1);
+            double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(turn), 1.2);
             double frontLeftPower = (vertical - horizontal + turn) / denominator;
             double frontRightPower = (vertical + horizontal - turn) / denominator;
             double backLeftPower = (vertical + horizontal + turn) / denominator;
@@ -131,7 +135,7 @@ public class Teleop extends LinearOpMode {
             if (gamepad2.x){
                 // down
                 //int newSliderTarget = slider.getCurrentPosition() + (int)(STEP_INCHES * TICKS_PER_INCH);
-                int newSliderTarget = slider.getCurrentPosition() + 40;
+                int newSliderTarget = slider.getCurrentPosition() + 80;
                 if (newSliderTarget <= BotCoefficients.SLIDER_BOTTOM_POSITION) {
                     slider.setTargetPosition(newSliderTarget);
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -158,7 +162,7 @@ public class Teleop extends LinearOpMode {
                 //slider.setPower(0);
             }
             else {
-                if (slider.getCurrentPosition() > -3) {
+                if (slider.getCurrentPosition() > -2) {
                     slider.setPower(0);
                 }
                 else {
@@ -180,15 +184,23 @@ public class Teleop extends LinearOpMode {
             // control grabber
             if (gamepad2.left_bumper || gamepad1.left_bumper) {
                 // open
-                grabber.setPosition(BotCoefficients.grabberOpen);
+                grabber.setPosition(BotCoefficients.grabberClose);
                 leftOpen = true;
             }
             if ((gamepad2.left_trigger > 0.3) || (gamepad1.left_trigger > 0.3)){
                 //close
-                grabber.setPosition(BotCoefficients.grabberClose);
+                grabber.setPosition(BotCoefficients.grabberOpen);
                 leftOpen = false;
             }
 
+            if (gamepad2.right_bumper || gamepad1.right_bumper) {
+                // open
+                tilt.setPosition(BotCoefficients.tiltUp);
+            }
+            if ((gamepad2.right_trigger > 0.3) || (gamepad1.right_trigger > 0.3)){
+                //close
+                tilt.setPosition(BotCoefficients.tiltDown);
+            }
         }
 
     }

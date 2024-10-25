@@ -36,6 +36,7 @@ public abstract class AutoCommon extends LinearOpMode {
     //linear slider
     protected DcMotor         slider  = null;
     public Servo grabber = null;
+    public Servo tilt = null;
     protected ElapsedTime     runtime = new ElapsedTime();
 
     // For motot encoders
@@ -104,6 +105,9 @@ public abstract class AutoCommon extends LinearOpMode {
     public void initServo() {
         grabber = hardwareMap.get(Servo.class, "grabber");
         grabber.setPosition(BotCoefficients.grabberClose);
+        tilt = hardwareMap.servo.get("tilt");
+        tilt.setPosition(BotCoefficients.tiltDown);
+
         sleep(1000);
     }
 
@@ -115,17 +119,34 @@ public abstract class AutoCommon extends LinearOpMode {
         slider.setPower(0);
     }
     public void extendSliderToHighBar() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_LOW_BASKET_HEIGHT);
+        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
     }
 
-    public void hangSpeciman() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_LOW_BASKET_HEIGHT+20);
+    public void hangSpeciman_old() {
+        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+400);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
+        slider.setPower(0.1);
+        sleep(900);
+        grabber.setPosition(BotCoefficients.grabberSemiOpen);
+        //tilt.setPosition(BotCoefficients.tiltDown);
+    }
 
-        grabber.setPosition(BotCoefficients.grabberClose);
+    public void hangSpeciman() {
+        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+600);
+        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slider.setPower(0.2);
+        sleep(900);
+        //grabber.setPosition(BotCoefficients.grabberSemiOpen);
+        //tilt.setPosition(BotCoefficients.tiltDown);
+    }
+    public void resetSliderGrabber() {
+        tilt.setPosition(BotCoefficients.tiltDown);
+        grabber.setPosition(BotCoefficients.grabberOpen);
+        slider.setTargetPosition(0);
+        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slider.setPower(0.1);
     }
     public void initMotor(){
         // Initialize the drive system variables.
