@@ -135,7 +135,7 @@ public class Teleop extends LinearOpMode {
             if (gamepad2.x){
                 // down
                 //int newSliderTarget = slider.getCurrentPosition() + (int)(STEP_INCHES * TICKS_PER_INCH);
-                int newSliderTarget = slider.getCurrentPosition() + 80;
+                int newSliderTarget = slider.getCurrentPosition() + 150;
                 if (newSliderTarget <= BotCoefficients.SLIDER_BOTTOM_POSITION) {
                     slider.setTargetPosition(newSliderTarget);
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -172,7 +172,7 @@ public class Teleop extends LinearOpMode {
 
             // up slider to low basket and high bar level
             if (gamepad1.y) {
-                slider.setTargetPosition(BotCoefficients.SLIDER_LOW_BASKET_HEIGHT);
+                slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+200);
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
             }
