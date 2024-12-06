@@ -36,6 +36,8 @@ public class Teleop extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     Servo grabber = null;
     Servo tilt = null;
+    Servo extent = null;
+    Servo rotator = null;
     //Servo grabberTilt = null;
     //Servo grabberR = null;
     //Servo grabberL = null;
@@ -78,7 +80,14 @@ public class Teleop extends LinearOpMode {
         grabber.setPosition(BotCoefficients.grabberClose);
 
         tilt = hardwareMap.servo.get("tilt");
-        tilt.setPosition(BotCoefficients.tiltDown);
+        //tilt.setPosition(BotCoefficients.tiltDown);
+        tilt.setPosition(0.52);
+
+        extent = hardwareMap.servo.get("extent");
+        extent.setPosition(0);
+
+        rotator = hardwareMap.servo.get("rotator");
+        rotator.setPosition(0.475);
 
         /*
         DcMotor lifter = hardwareMap.dcMotor.get("lifter");
@@ -133,6 +142,9 @@ public class Teleop extends LinearOpMode {
             // control slider
             // x button for down
             if (gamepad2.x){
+                telemetry.addData("Status", "Run Time: " + runtime.toString());
+                telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
+                telemetry.update();
                 // down
                 //int newSliderTarget = slider.getCurrentPosition() + (int)(STEP_INCHES * TICKS_PER_INCH);
                 int newSliderTarget = slider.getCurrentPosition() + 150;
@@ -181,6 +193,23 @@ public class Teleop extends LinearOpMode {
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
             }
+            // control horizontal extention
+            if (gamepad2.a) {
+                extent.setPosition(0.5);
+            }
+
+            if (gamepad2.b) {
+                extent.setPosition(0.75);
+            }
+
+            // for testing purpose
+            if (gamepad1.a) {
+                extent.setPosition(0.5);
+            }
+
+            if (gamepad1.b) {
+                extent.setPosition(0.9);
+            }
             // control grabber
             if (gamepad2.left_bumper || gamepad1.left_bumper) {
                 // open
@@ -193,13 +222,38 @@ public class Teleop extends LinearOpMode {
                 leftOpen = false;
             }
 
-            if (gamepad2.right_bumper || gamepad1.right_bumper) {
+            //control arm tilt
+            if ( gamepad2.right_bumper) {
                 // open
-                tilt.setPosition(BotCoefficients.tiltUp);
+                //tilt.setPosition(BotCoefficients.tiltUp);
+                tilt.setPosition(0.52);
             }
-            if ((gamepad2.right_trigger > 0.3) || (gamepad1.right_trigger > 0.3)){
+            if  (gamepad2.right_trigger > 0.3){
                 //close
-                tilt.setPosition(BotCoefficients.tiltDown);
+                //tilt.setPosition(BotCoefficients.tiltDown);
+                tilt.setPosition(0.58);
+            }
+
+            // for testing purpose
+            if (gamepad1.right_bumper) {
+                // open
+                //tilt.setPosition(BotCoefficients.tiltUp);
+                tilt.setPosition(0.58);
+            }
+            if (gamepad1.right_trigger > 0.3){
+                //close
+                //tilt.setPosition(BotCoefficients.tiltDown);
+                tilt.setPosition(0.37);
+            }
+            //control grabber rotation
+            if (gamepad2.dpad_up) {
+                rotator.setPosition(0.475);
+            }
+            if (gamepad2.dpad_left) {
+                rotator.setPosition(0.52);
+            }
+            if (gamepad2.dpad_right) {
+                rotator.setPosition(0.44);
             }
         }
 

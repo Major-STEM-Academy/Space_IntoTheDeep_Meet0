@@ -10,10 +10,11 @@ public class BotCoefficients {
 
     public static double tiltDown = 0.46;
     public static double tiltUp = 0.7;
-    public static final double SLIDER_DOWN_SPEED = 0.2;
+    public static double tiltUpInit = 1.5;
+    public static final double SLIDER_DOWN_SPEED = 0.8;
     public static final double SLIDER_UP_SPEED = 0.8;
     public static final double SLIDER_HOLD_POWER = 0.4;
-    public static final int SLIDER_TOP_POSITION = -3060;
+    public static final int SLIDER_TOP_POSITION = -2900;
     public static final int SLIDER_LOW_BASKET_HEIGHT = -2206;
     public static final int SLIDER_HIGH_BAR_HEIGHT = -1520;
     public static final int SLIDER_BOTTOM_POSITION = 0;

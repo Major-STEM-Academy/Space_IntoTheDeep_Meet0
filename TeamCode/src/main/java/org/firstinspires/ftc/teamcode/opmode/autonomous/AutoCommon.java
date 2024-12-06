@@ -106,8 +106,7 @@ public abstract class AutoCommon extends LinearOpMode {
         grabber = hardwareMap.get(Servo.class, "grabber");
         grabber.setPosition(BotCoefficients.grabberClose);
         tilt = hardwareMap.servo.get("tilt");
-        tilt.setPosition(BotCoefficients.tiltDown);
-
+        tilt.setPosition(BotCoefficients.tiltUpInit);
         sleep(1000);
     }
 
@@ -140,6 +139,74 @@ public abstract class AutoCommon extends LinearOpMode {
         sleep(900);
         //grabber.setPosition(BotCoefficients.grabberSemiOpen);
         //tilt.setPosition(BotCoefficients.tiltDown);
+    }
+
+    public void touchLowBar() {
+        tilt.setPosition(BotCoefficients.tiltUp);
+        extendSliderToHighBar();
+        encoderDrive(0.2,  20,  20, 5.0);
+        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+650);
+        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slider.setPower(0.2);
+        sleep(900);
+        //grabber.setPosition(BotCoefficients.grabberSemiOpen);
+        //tilt.setPosition(BotCoefficients.tiltDown);
+    }
+
+    public void pushSamples() {
+        encoderDrive(0.3,  -10,  -10, 5.0);
+        // strafe to left
+        strafe_encoder(0.4, 35, 35, 5.0);
+        encoderDrive(0.4,  35,  35, 5.0);
+
+
+        // push first sample
+        strafe_encoder(0.3, 11, 11, 5.0);
+        encoderDrive(0.5,  -50,  -50, 5.0);
+        encoderDrive(0.5,  50,  50, 5.0);
+
+        // push second sample
+        strafe_encoder(0.3, 15, 15, 5.0);
+        encoderDrive(0.5,  -50,  -50, 5.0);
+        encoderDrive(0.5,  50,  50, 5.0);
+
+        // push third sample
+        strafe_encoder(0.3, 15, 15, 5.0);
+        encoderDrive(0.5,  -50,  -50, 5.0);
+    }
+
+    public void simpleParkLeft() {
+        encoderDrive(0.2,  -25,  -25, 5.0);
+        strafe_encoder(0.3, -85, -85, 5.0);
+    }
+    public void simpleParkRight() {
+        encoderDrive(0.2,  -25,  -25, 5.0);
+        // strafe to right
+        strafe_encoder(0.4, -65, -65, 5.0);
+    }
+
+    public void pickSampleRight() {
+
+        encoderDrive(0.2,  -10,  -10, 5.0);
+        // strafe to right
+        strafe_encoder(0.3, -47, -47, 5.0);
+        tilt.setPosition(0.40);
+        encoderDrive(0.3,  12,  12, 5.0);
+        grabber.setPosition(BotCoefficients.grabberClose);
+        sleep(1000);
+        tilt.setPosition(BotCoefficients.tiltUp);
+        encoderDrive(0.2,  -28,  -28, 5.0);
+        turnToTargetYaw(90, 0.4, 3000);
+        encoderDrive(0.5,  112,  112, 5.0);
+        slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
+        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slider.setPower(0.8);
+        sleep(3000);
+        grabber.setPosition(BotCoefficients.grabberOpen);
+        sleep(1000);
+        slider.setTargetPosition(0);
+        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slider.setPower(0.8);
     }
     public void resetSliderGrabber() {
         tilt.setPosition(BotCoefficients.tiltDown);
@@ -733,12 +800,15 @@ public abstract class AutoCommon extends LinearOpMode {
                 ticks = 600;
 
             tickDirection = (currentYaw < targetYawDegree) ? -1 : 1;
-            if (ticks < 1)
+            if (ticks < 1) {
                 break;
-            if (diffYaw > 3)
+            }
+            if (diffYaw > 3) {
                 factor = 1.0;
-            else
+            }
+            else {
                 factor = diffYaw / 3;
+            }
 
                 driveMotors(
                         (int) (tickDirection * ticks ),
