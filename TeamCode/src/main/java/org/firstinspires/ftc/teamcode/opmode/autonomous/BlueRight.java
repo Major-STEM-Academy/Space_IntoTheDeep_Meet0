@@ -65,19 +65,7 @@ public class BlueRight extends AutoCommon {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        tilt.setPosition(BotCoefficients.tiltUp);
-        extendSliderToHighBar();
-        sleep(1000);
-        //drive to bars
-        encoderDrive(0.2,  30,  30, 5.0);
-
-        //extend linear slider to high bar
-        //extendSliderToHighBar();
-        //sleep(2000);
-        //lower linear slider and open grabber
-        hangSpeciman();
-        sleep(1000);
-        resetSliderGrabber();
+        driveAndHangSpeciman();
 
         //back a little bit
         simpleParkRight();

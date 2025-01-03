@@ -52,8 +52,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name=" Auto Drive: Left Side", group="Robot")
-public class BlueLeft extends AutoCommon {
+@Autonomous(name=" Auto Drive: Left Side + High Basket", group="Robot")
+public class BlueLeftHighBasket extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -68,8 +68,14 @@ public class BlueLeft extends AutoCommon {
         //tilt.setPosition(BotCoefficients.tiltUp);
         driveAndHangSpeciman();
 
-        //pushSamples();
-        simpleParkLeft();
+        //drive to pick up the sample
+        encoderDrive(0.3,  -11.2,  -11.2, 5.0);
+        sleep(1000);
+        strafe_encoder(0.4, 52, 52
+                , 5.0);
+
+        putSamplesInHighBacket();
+        //simpleParkLeft();
         //back a little bit
 
         //encoderDrive(0.5,  60,  60, 5.0);

@@ -77,11 +77,11 @@ public class Teleop extends LinearOpMode {
         telemetry.update();
 
         grabber = hardwareMap.servo.get("grabber");
-        grabber.setPosition(BotCoefficients.grabberClose);
+        grabber.setPosition(BotCoefficients.grabberOpen);
 
         tilt = hardwareMap.servo.get("tilt");
         //tilt.setPosition(BotCoefficients.tiltDown);
-        tilt.setPosition(0.52);
+        tilt.setPosition(0.55);
 
         extent = hardwareMap.servo.get("extent");
         extent.setPosition(0);
@@ -161,7 +161,7 @@ public class Teleop extends LinearOpMode {
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
                 telemetry.update();
-                int newSliderTarget = slider.getCurrentPosition() - 80;
+                int newSliderTarget = slider.getCurrentPosition() - 120;
                 if (newSliderTarget > BotCoefficients.SLIDER_TOP_POSITION) {
                     slider.setTargetPosition(newSliderTarget);
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -199,10 +199,14 @@ public class Teleop extends LinearOpMode {
             }
 
             if (gamepad2.b) {
-                extent.setPosition(0.75);
+                extent.setPosition(0.76);
+            }
+            if (gamepad2.dpad_down) {
+                extent.setPosition(0.9);
             }
 
             // for testing purpose
+            /*
             if (gamepad1.a) {
                 extent.setPosition(0.5);
             }
@@ -210,6 +214,8 @@ public class Teleop extends LinearOpMode {
             if (gamepad1.b) {
                 extent.setPosition(0.9);
             }
+            */
+
             // control grabber
             if (gamepad2.left_bumper || gamepad1.left_bumper) {
                 // open
@@ -235,6 +241,7 @@ public class Teleop extends LinearOpMode {
             }
 
             // for testing purpose
+            /*
             if (gamepad1.right_bumper) {
                 // open
                 //tilt.setPosition(BotCoefficients.tiltUp);
@@ -245,6 +252,8 @@ public class Teleop extends LinearOpMode {
                 //tilt.setPosition(BotCoefficients.tiltDown);
                 tilt.setPosition(0.37);
             }
+
+             */
             //control grabber rotation
             if (gamepad2.dpad_up) {
                 rotator.setPosition(0.475);
