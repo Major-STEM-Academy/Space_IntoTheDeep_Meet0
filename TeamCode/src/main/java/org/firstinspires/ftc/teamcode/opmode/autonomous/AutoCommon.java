@@ -109,7 +109,7 @@ public abstract class AutoCommon extends LinearOpMode {
         grabber.setPosition(BotCoefficients.grabberClose);
         tilt = hardwareMap.servo.get("tilt");
         //tilt.setPosition(BotCoefficients.tiltUpInit);
-        tilt.setPosition(0.45);
+        tilt.setPosition(0.47);
         extent = hardwareMap.servo.get("extent");
         extent.setPosition(0);
         rotator = hardwareMap.servo.get("rotator");
@@ -140,10 +140,10 @@ public abstract class AutoCommon extends LinearOpMode {
     }
 
     public void hangSpeciman() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+600);
+        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+1000);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.2);
-        sleep(900);
+        sleep(1200);
         //grabber.setPosition(BotCoefficients.grabberSemiOpen);
         //tilt.setPosition(BotCoefficients.tiltDown);
     }

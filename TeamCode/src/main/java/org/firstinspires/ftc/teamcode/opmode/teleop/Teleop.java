@@ -199,7 +199,7 @@ public class Teleop extends LinearOpMode {
             }
 
             if (gamepad2.b) {
-                extent.setPosition(0.76);
+                extent.setPosition(0.68);
             }
             if (gamepad2.dpad_down) {
                 extent.setPosition(0.9);
@@ -237,7 +237,7 @@ public class Teleop extends LinearOpMode {
             if  (gamepad2.right_trigger > 0.3){
                 //close
                 //tilt.setPosition(BotCoefficients.tiltDown);
-                tilt.setPosition(0.58);
+                tilt.setPosition(0.60);
             }
 
             // for testing purpose
