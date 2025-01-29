@@ -30,9 +30,6 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -54,8 +51,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  */
 
 @Autonomous(name=" Auto Drive: Left Side", group="Robot")
-@Disabled
-public class BlueLeft extends AutoCommon {
+public class BlueLeftV2 extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -67,11 +63,16 @@ public class BlueLeft extends AutoCommon {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        encoderDrive(0.2,  5,  5, 5.0);
+        strafe_encoder(0.4, 55, 55, 5.0);
+        encoderDrive(0.3,  10,  -10, 5.0);
+        putSamplesInHighBacket();
+        // strafe to right
         //tilt.setPosition(BotCoefficients.tiltUp);
-        driveAndHangSpeciman();
+        //driveAndHangSpeciman();
 
         //pushSamples();
-        simpleParkLeft();
+        //simpleParkLeft();
         //back a little bit
 
         //encoderDrive(0.5,  60,  60, 5.0);

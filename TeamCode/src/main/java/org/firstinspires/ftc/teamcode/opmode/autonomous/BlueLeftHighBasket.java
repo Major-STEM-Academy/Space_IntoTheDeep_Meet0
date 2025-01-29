@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 
@@ -53,6 +54,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  */
 
 @Autonomous(name=" Auto Drive: Left Side + High Basket", group="Robot")
+@Disabled
 public class BlueLeftHighBasket extends AutoCommon {
 
     @Override

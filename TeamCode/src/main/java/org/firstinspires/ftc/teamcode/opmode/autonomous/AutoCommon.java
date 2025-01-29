@@ -105,15 +105,20 @@ public abstract class AutoCommon extends LinearOpMode {
         initIMU();
     }
     public void initServo() {
-        grabber = hardwareMap.get(Servo.class, "grabber");
-        grabber.setPosition(BotCoefficients.grabberClose);
+        grabber = hardwareMap.servo.get("grabber");
+        grabber.setPosition(BotCoefficients.GRABBER_INIT);
+
         tilt = hardwareMap.servo.get("tilt");
-        //tilt.setPosition(BotCoefficients.tiltUpInit);
-        tilt.setPosition(0.45);
+        //tilt.setPosition(BotCoefficients.tiltDown);
+        //tilt.setPosition(0.26);
+        tilt.setPosition(BotCoefficients.TILT_INIT);
+
         extent = hardwareMap.servo.get("extent");
-        extent.setPosition(0);
+        extent.setPosition(BotCoefficients.EXTENT_INIT);
+
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(0.475);
+        rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_INIT);
+
         sleep(1000);
     }
 
@@ -175,42 +180,20 @@ public void driveAndHangSpeciman() {
 }
     public void putSamplesInHighBacket() {
 
-        //sleep(3000);
-        // strafe to left
-
-        rotator.setPosition(0.48);
-        grabber.setPosition(BotCoefficients.grabberOpen);
-        tilt.setPosition(BotCoefficients.tiltDown);
-        extent.setPosition(BotCoefficients.EXTENT_LONG);
-
-        sleep(1000);
-        grabber.setPosition(BotCoefficients.grabberClose);
-        sleep(1000);
-        tilt.setPosition(BotCoefficients.tiltUp);
-
         slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.9);
-        encoderDrive(0.3,  -41.5,  41.5, 5.0);
-        extent.setPosition(0.92);
+        slider.setPower(0.95);
+        sleep(2000);
+        tilt.setPosition(BotCoefficients.TILT_UP);
+        sleep(2000);
+        tilt.setPosition(BotCoefficients.TILT_DOWN);
         sleep(1000);
-        encoderDrive(0.2,  7,  7, 5.0);
-        grabber.setPosition(BotCoefficients.grabberOpen);
-        sleep(1000);
-        encoderDrive(0.2,  -5,  -5, 5.0);
-        extent.setPosition(BotCoefficients.EXTENT_SHORT);
-        encoderDrive(0.3,  -4,  4, 5.0);
 
         slider.setTargetPosition(BotCoefficients.SLIDER_BOTTOM_POSITION);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.7);
 
-        encoderDrive(0.2,  -50,  -50, 5.0);
-        //encoderDrive(0.3,  -10,  10, 5.0);
-
-
         sleep(2000);
-
     }
 
     public void putSamplesInHighBacket_2() {
