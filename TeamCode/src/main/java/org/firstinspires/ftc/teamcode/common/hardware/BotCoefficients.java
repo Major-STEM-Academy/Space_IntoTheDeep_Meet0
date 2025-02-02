@@ -30,7 +30,7 @@ public class BotCoefficients {
 
     public static final double INTAKE_ROTATOR_INIT = 0.42;
     public static final double INTAKE_ROTATOR_DOWN = 0.364;
-    public static final double INTAKE_ROTATOR_UP = 0.435;
+    public static final double INTAKE_ROTATOR_UP = 0.436;
     public static final double EXTENT_INIT = 0.98;
     public static final double EXTENT_OUT = 0.3;
     public static final double EXTENT_BACK = EXTENT_INIT;
