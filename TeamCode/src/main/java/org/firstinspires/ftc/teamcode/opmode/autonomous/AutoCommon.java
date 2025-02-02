@@ -35,10 +35,13 @@ public abstract class AutoCommon extends LinearOpMode {
     //protected DcMotor         rotator  = null;
     //linear slider
     protected DcMotor         slider  = null;
-    public Servo grabber = null;
+    protected DcMotor actuator = null;
+    public Servo intake = null;
     public Servo tilt = null;
     public Servo extent = null;
     public Servo rotator = null;
+    public Servo grabber = null;
+    public Servo grabber_tilt = null;
     protected ElapsedTime     runtime = new ElapsedTime();
 
     // For motot encoders
@@ -105,8 +108,8 @@ public abstract class AutoCommon extends LinearOpMode {
         initIMU();
     }
     public void initServo() {
-        grabber = hardwareMap.servo.get("grabber");
-        grabber.setPosition(BotCoefficients.GRABBER_INIT);
+        intake = hardwareMap.servo.get("intake");
+        intake.setPosition(BotCoefficients.INTAKE_INIT);
 
         tilt = hardwareMap.servo.get("tilt");
         //tilt.setPosition(BotCoefficients.tiltDown);
@@ -117,17 +120,51 @@ public abstract class AutoCommon extends LinearOpMode {
         extent.setPosition(BotCoefficients.EXTENT_INIT);
 
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_INIT);
+        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
+
+        grabber = hardwareMap.servo.get("grabber");
+        grabber.setPosition(BotCoefficients.GRABBER_INIT);
+
+        grabber_tilt = hardwareMap.servo.get("grabber_tilt");
+        grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_INIT);
 
         sleep(1000);
     }
+    public void initMotor(){
+        // Initialize the drive system variables.
+        backleftDrive  = hardwareMap.get(DcMotor.class, "bl");
+        backrightDrive = hardwareMap.get(DcMotor.class, "br");
+        frontleftDrive  = hardwareMap.get(DcMotor.class, "fl");
+        frontrightDrive = hardwareMap.get(DcMotor.class, "fr");
 
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+
+        backrightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backleftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontrightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontleftDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        backleftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backrightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontleftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontrightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        initLinearSlider();
+    }
     public void initLinearSlider() {
         slider = hardwareMap.dcMotor.get("slider");
         slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slider.setPower(0);
+
+        actuator = hardwareMap.dcMotor.get("actuator");
+        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        actuator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        actuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        actuator.setPower(0);
     }
     public void extendSliderToHighBar() {
         slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT);
@@ -145,10 +182,8 @@ public abstract class AutoCommon extends LinearOpMode {
     }
 
     public void hangSpeciman() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+600);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.2);
-        sleep(900);
+
+
         //grabber.setPosition(BotCoefficients.grabberSemiOpen);
         //tilt.setPosition(BotCoefficients.tiltDown);
     }
@@ -165,18 +200,31 @@ public abstract class AutoCommon extends LinearOpMode {
         //tilt.setPosition(BotCoefficients.tiltDown);
     }
 public void driveAndHangSpeciman() {
-    extendSliderToHighBar();
-    sleep(1000);
+    //extendSliderToHighBar();
+    //sleep(1000);
     //drive to bars
-    encoderDrive(0.2,  BotCoefficients.DISTANCE_TO_HIGH_BAR,  BotCoefficients.DISTANCE_TO_HIGH_BAR, 5.0);
+    actuator.setTargetPosition(BotCoefficients.ACTUATOR_TOP);
+    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    actuator.setPower(0.9);
+    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_UP);
+    sleep(2000);
+
+    encoderDrive(0.2,  -BotCoefficients.DISTANCE_TO_HIGH_BAR,  -BotCoefficients.DISTANCE_TO_HIGH_BAR, 5.0);
+    //stopRobot();
+    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_DOWN);
+    sleep(500);
+    //encoderDrive(0.8,  -4,  -4, 5.0);
+    grabber.setPosition(BotCoefficients.GRABBER_OPEN);
+    //sleep(1000);
 
     //extend linear slider to high bar
     //extendSliderToHighBar();
     //sleep(2000);
     //lower linear slider and open grabber
-    hangSpeciman();
-    sleep(1000);
-    resetSliderGrabber();
+    //hangSpeciman();
+    actuator.setTargetPosition(0);
+    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    actuator.setPower(0.8);
 }
     public void putSamplesInHighBacket() {
 
@@ -266,13 +314,13 @@ public void driveAndHangSpeciman() {
     }
 
     public void simpleParkLeft() {
-        encoderDrive(0.2,  -25,  -25, 5.0);
-        strafe_encoder(0.3, -85, -85, 5.0);
+        encoderDrive(0.2,  25,  25, 5.0);
+        strafe_encoder(0.3, 85, 85, 5.0);
     }
     public void simpleParkRight() {
-        encoderDrive(0.2,  -25,  -25, 5.0);
+        encoderDrive(0.2,  25,  25, 5.0);
         // strafe to right
-        strafe_encoder(0.4, -62, -62, 5.0);
+        strafe_encoder(0.4, 55, 55, 5.0);
     }
 
     public void pickSampleRight() {
@@ -301,28 +349,11 @@ public void driveAndHangSpeciman() {
     public void resetSliderGrabber() {
         //tilt.setPosition(BotCoefficients.tiltDown);
         grabber.setPosition(BotCoefficients.grabberOpen);
-        slider.setTargetPosition(0);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.1);
+        actuator.setTargetPosition(0);
+        actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        actuator.setPower(0.8);
     }
-    public void initMotor(){
-        // Initialize the drive system variables.
-        backleftDrive  = hardwareMap.get(DcMotor.class, "bl");
-        backrightDrive = hardwareMap.get(DcMotor.class, "br");
-        frontleftDrive  = hardwareMap.get(DcMotor.class, "fl");
-        frontrightDrive = hardwareMap.get(DcMotor.class, "fr");
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-
-        backrightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backleftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontrightDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontleftDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        initLinearSlider();
-    }
     /*
     public void initTfodAndAprilTag() {
 

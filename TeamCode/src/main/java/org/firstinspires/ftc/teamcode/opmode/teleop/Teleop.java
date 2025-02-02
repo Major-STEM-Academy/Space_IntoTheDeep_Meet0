@@ -95,10 +95,14 @@ public class Teleop extends LinearOpMode {
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
+        //telemetry.update();
+
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("actuator", "position (%d)", actuator.getCurrentPosition());
         telemetry.update();
 
         intake = hardwareMap.servo.get("intake");
-        intake.setPosition(BotCoefficients.GRABBER_INIT);
+        intake.setPosition(BotCoefficients.INTAKE_INIT);
 
         tilt = hardwareMap.servo.get("tilt");
         //tilt.setPosition(BotCoefficients.tiltDown);
@@ -109,13 +113,13 @@ public class Teleop extends LinearOpMode {
         extent.setPosition(BotCoefficients.EXTENT_INIT);
 
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_INIT);
+        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
 
         grabber = hardwareMap.servo.get("grabber");
-        grabber.setPosition(0.8);
+        grabber.setPosition(BotCoefficients.GRABBER_INIT);
 
         grabber_tilt = hardwareMap.servo.get("grabber_tilt");
-        grabber_tilt.setPosition(0.2);
+        grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_INIT);
 
 
         /*
@@ -213,14 +217,33 @@ public class Teleop extends LinearOpMode {
 
             // up slider to low basket and high bar level
             if (gamepad1.y) {
-                actuator.setTargetPosition(3600);
-                actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                actuator.setPower(Math.abs(0.8));
+
+                    actuator.setTargetPosition(BotCoefficients.ACTUATOR_TOP);
+                    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    actuator.setPower(Math.abs(0.8));
+                    telemetry.addData("Status", "Run Time: " + runtime.toString());
+                    telemetry.addData("actuator", "position (%d)", actuator.getCurrentPosition());
+                    telemetry.update();
+
+
             }
             else if (gamepad1.x) {
-                actuator.setTargetPosition(0);
-                actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                actuator.setPower(Math.abs(0.8));
+
+                    actuator.setTargetPosition(0);
+                    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    actuator.setPower(Math.abs(0.8));
+                    telemetry.addData("Status", "Run Time: " + runtime.toString());
+                    telemetry.addData("actuator", "position (%d)", actuator.getCurrentPosition());
+                    telemetry.update();
+
+
+            }
+            else {
+                int currentPos = actuator.getCurrentPosition();
+                if ((currentPos <= 0) || (currentPos>=BotCoefficients.ACTUATOR_TOP)) {
+                    actuator.setPower(0);
+                }
+
             }
             // control horizontal extention
             if (gamepad2.a) {
@@ -245,37 +268,37 @@ public class Teleop extends LinearOpMode {
             // control grabber
             if (gamepad1.right_bumper) {
                 // open
-                grabber.setPosition(0.6);
+                grabber.setPosition(BotCoefficients.GRABBER_OPEN);
                 //sleep(1500);
                 //rotator.setPosition(0.42);
                 //leftOpen = true;
             }
             if (gamepad1.right_trigger > 0.3){
                 //close
-                grabber.setPosition(0.8);
+                grabber.setPosition(BotCoefficients.GRABBER_CLOSE);
                 //leftOpen = false;
             }
             // control grabber tilt
             if (gamepad1.left_bumper) {
                 // open
-                grabber_tilt.setPosition(0.421);
+                grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_UP);
                 //sleep(1500);
                 //rotator.setPosition(0.42);
                 //leftOpen = true;
             }
             if (gamepad1.left_trigger > 0.3){
                 //close
-                grabber_tilt.setPosition(0.39);
+                grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_DOWN);
                 //leftOpen = false;
             }
             // control intake tilt
             if (gamepad2.left_bumper) {
                 // open
                 if (extent.getPosition() > 0.85) {
-                    rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_UP);
+                    rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
                 }
                 else {
-                    rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_INIT);
+                    rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
                 }
                 //sleep(1500);
                 //rotator.setPosition(0.42);
@@ -283,7 +306,7 @@ public class Teleop extends LinearOpMode {
             }
             if (gamepad2.left_trigger > 0.3){
                 //close
-                rotator.setPosition(BotCoefficients.GRABBER_ROTATOR_DOWN);
+                rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
                 //leftOpen = false;
             }
 
@@ -315,13 +338,13 @@ public class Teleop extends LinearOpMode {
              */
             //control grabber
             if (gamepad2.dpad_up) {
-                intake.setPosition(BotCoefficients.GRABBER_FORWARD);
+                intake.setPosition(BotCoefficients.INTAKE_FORWARD);
             }
             if (gamepad2.dpad_down) {
-                intake.setPosition(BotCoefficients.GRABBER_BACKWARD);
+                intake.setPosition(BotCoefficients.INTAKE_BACKWARD);
             }
             if (gamepad2.dpad_right || gamepad2.dpad_left ) {
-                intake.setPosition(BotCoefficients.GRABBER_INIT);
+                intake.setPosition(BotCoefficients.INTAKE_INIT);
             }
         }
 

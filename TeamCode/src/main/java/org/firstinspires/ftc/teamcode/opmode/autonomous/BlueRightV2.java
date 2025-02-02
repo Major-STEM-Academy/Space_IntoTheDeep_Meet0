@@ -30,9 +30,6 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -54,8 +51,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  */
 
 @Autonomous(name=" Auto Drive: Right Side", group="Robot")
-@Disabled
-public class BlueRight extends AutoCommon {
+public class BlueRightV2 extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -67,19 +63,30 @@ public class BlueRight extends AutoCommon {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        driveAndHangSpeciman();
-
-        //back a little bit
-        simpleParkRight();
-        //pickSampleRight();
-        //park and touch low bar
         /*
-        turnToTargetYaw(90, 0.4, 2000);
+        encoderDrive(0.2,  5,  5, 5.0);
+        strafe_encoder(0.4, 55, 55, 5.0);
+        encoderDrive(0.3,  10,  -10, 5.0);
+        putSamplesInHighBacket();
+
+         */
+        // strafe to right
+        //tilt.setPosition(BotCoefficients.tiltUp);
+        driveAndHangSpeciman();
+        simpleParkRight();
+        //pushSamples();
+        //simpleParkLeft();
+        //back a little bit
+
+        //encoderDrive(0.5,  60,  60, 5.0);
+
+        /*
+        turnToTargetYaw(-90, 0.4, 2000);
         encoderDrive(0.2,  20,  20, 5.0);
         touchLowBar();
 
          */
-        sleep(1000);
+        sleep(5000);
         // drive forward
         //encoderDrive(0.2,  31,  31, 5.0);
         // strafe to right
