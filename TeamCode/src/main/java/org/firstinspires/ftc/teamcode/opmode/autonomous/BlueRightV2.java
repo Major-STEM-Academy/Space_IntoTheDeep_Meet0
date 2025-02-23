@@ -73,7 +73,9 @@ public class BlueRightV2 extends AutoCommon {
         // strafe to right
         //tilt.setPosition(BotCoefficients.tiltUp);
         driveAndHangSpeciman();
-        simpleParkRight();
+        getSpecimen();
+        //driveAndHangSpeciman();
+        //simpleParkRight();
         //pushSamples();
         //simpleParkLeft();
         //back a little bit

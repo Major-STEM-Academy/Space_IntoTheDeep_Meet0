@@ -113,7 +113,7 @@ public class Teleop extends LinearOpMode {
         extent.setPosition(BotCoefficients.EXTENT_INIT);
 
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
+        rotator.setPosition(0.4);
 
         grabber = hardwareMap.servo.get("grabber");
         grabber.setPosition(BotCoefficients.GRABBER_INIT);
@@ -186,6 +186,7 @@ public class Teleop extends LinearOpMode {
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
                 }
+
                 //slider.setPower(-1.0);
             }
             // y button for up
@@ -195,7 +196,8 @@ public class Teleop extends LinearOpMode {
                 telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
                 telemetry.update();
                 int newSliderTarget = slider.getCurrentPosition() - 120;
-                if (newSliderTarget > BotCoefficients.SLIDER_TOP_POSITION) {
+                if (newSliderTarget > -3000) {
+                    //extent.setPosition(0.66);
                     slider.setTargetPosition(newSliderTarget);
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
@@ -298,7 +300,7 @@ public class Teleop extends LinearOpMode {
                     rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
                 }
                 else {
-                    rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
+                    rotator.setPosition(0.4);
                 }
                 //sleep(1500);
                 //rotator.setPosition(0.42);
@@ -306,7 +308,12 @@ public class Teleop extends LinearOpMode {
             }
             if (gamepad2.left_trigger > 0.3){
                 //close
-                rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
+                if (extent.getPosition() < 0.5) {
+                    rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN_EXTENT);
+                }
+                else {
+                    rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
+                }
                 //leftOpen = false;
             }
 

@@ -120,7 +120,7 @@ public abstract class AutoCommon extends LinearOpMode {
         extent.setPosition(BotCoefficients.EXTENT_INIT);
 
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
+        rotator.setPosition(0.45);
 
         grabber = hardwareMap.servo.get("grabber");
         grabber.setPosition(BotCoefficients.GRABBER_INIT);
@@ -209,22 +209,49 @@ public void driveAndHangSpeciman() {
     grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_UP);
     sleep(2000);
 
-    encoderDrive(0.2,  -BotCoefficients.DISTANCE_TO_HIGH_BAR,  -BotCoefficients.DISTANCE_TO_HIGH_BAR, 5.0);
+    encoderDrive(0.8,  -34,  -34, 5.0);
     //stopRobot();
-    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_DOWN);
-    sleep(500);
-    //encoderDrive(0.8,  -4,  -4, 5.0);
     grabber.setPosition(BotCoefficients.GRABBER_OPEN);
-    //sleep(1000);
+    sleep(1000);
+    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_DOWN);
+    sleep(1000);
 
-    //extend linear slider to high bar
-    //extendSliderToHighBar();
-    //sleep(2000);
-    //lower linear slider and open grabber
-    //hangSpeciman();
     actuator.setTargetPosition(0);
     actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     actuator.setPower(0.8);
+}
+
+public void getSpecimen() {
+    encoderDrive(0.5,  5,  5, 5.0);
+    strafe_encoder(0.5, 40, 40, 5.0);
+    encoderDrive(0.3,  46.5,  -46.5, 5.0);
+    grabber.setPosition(BotCoefficients.GRABBER_OPEN);
+    encoderDrive(0.2,  -23,  -23, 5.0);
+    sleep(500);
+    encoderDrive(0.2,  1.3,  1.3, 5.0);
+    sleep(500);
+    grabber.setPosition(BotCoefficients.GRABBER_CLOSE);
+    sleep(500);
+    actuator.setTargetPosition(BotCoefficients.ACTUATOR_TOP);
+    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    actuator.setPower(0.9);
+    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_UP);
+
+    encoderDrive(0.5,  5,  5, 5.0);
+    strafe_encoder(0.5, 44, 44, 5.0);
+    encoderDrive(0.3,  47,  -47, 5.0);
+    encoderDrive(0.9,  -27,  -27, 5.0);
+
+    grabber.setPosition(BotCoefficients.GRABBER_OPEN);
+    sleep(1000);
+    grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_DOWN);
+    sleep(1000);
+
+    actuator.setTargetPosition(0);
+    actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    actuator.setPower(0.8);
+    encoderDrive(0.5,  24,  24, 5.0);
+    strafe_encoder(0.4, 42, 42, 5.0);
 }
     public void putSamplesInHighBacket() {
 
@@ -318,7 +345,7 @@ public void driveAndHangSpeciman() {
         strafe_encoder(0.3, 85, 85, 5.0);
     }
     public void simpleParkRight() {
-        encoderDrive(0.2,  25,  25, 5.0);
+        encoderDrive(0.2,  24,  24, 5.0);
         // strafe to right
         strafe_encoder(0.4, 55, 55, 5.0);
     }

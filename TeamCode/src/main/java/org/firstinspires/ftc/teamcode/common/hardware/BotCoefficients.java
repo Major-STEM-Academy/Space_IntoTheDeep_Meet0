@@ -18,7 +18,7 @@ public class BotCoefficients {
     public static final int SLIDER_LOW_BASKET_HEIGHT = -2206;
     public static final int SLIDER_HIGH_BAR_HEIGHT = -1180;
     public static final int SLIDER_BOTTOM_POSITION = 0;
-    public static final double DISTANCE_TO_HIGH_BAR = 31;
+    public static final double DISTANCE_TO_HIGH_BAR = 33;
 
     public static final double EXTENT_LONG = 0.75;
     public static final double EXTENT_SHORT = 0.5;
@@ -28,18 +28,19 @@ public class BotCoefficients {
     public static final double INTAKE_FORWARD = 0;
     public static final double INTAKE_BACKWARD = 1;
 
-    public static final double INTAKE_ROTATOR_INIT = 0.42;
-    public static final double INTAKE_ROTATOR_DOWN = 0.364;
-    public static final double INTAKE_ROTATOR_UP = 0.436;
-    public static final double EXTENT_INIT = 0.98;
+    public static final double INTAKE_ROTATOR_INIT = 0.44;
+    public static final double INTAKE_ROTATOR_DOWN = 0.369; //0.368;
+    public static final double INTAKE_ROTATOR_DOWN_EXTENT = 0.375;
+    public static final double INTAKE_ROTATOR_UP = 0.45;
+    public static final double EXTENT_INIT = 0.9;
     public static final double EXTENT_OUT = 0.3;
     public static final double EXTENT_BACK = EXTENT_INIT;
 
-    public static final double TILT_INIT = 0.31;
-    public static final double TILT_DOWN = TILT_INIT;
-    public static final double TILT_UP = 0.55;
+    public static final double TILT_INIT = 0.275 ; //0.27;
+    public static final double TILT_DOWN = 0.275 ;
+    public static final double TILT_UP = 0.52;
 
-    public static final double GRABBER_INIT = 0.95;
+    public static final double GRABBER_INIT = 0.99;
     public static final double GRABBER_OPEN = 0.6;
     public static final double GRABBER_CLOSE = GRABBER_INIT;
 
@@ -47,5 +48,5 @@ public class BotCoefficients {
     public static final double GRABBER_TILT_UP = 0.418;
     public static final double GRABBER_TILT_DOWN = 0.38;
 
-    public static final int ACTUATOR_TOP = 3600;
+    public static final int ACTUATOR_TOP = 3100;
 }
