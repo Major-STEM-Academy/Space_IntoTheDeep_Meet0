@@ -14,7 +14,7 @@ public class BotCoefficients {
     public static final double SLIDER_DOWN_SPEED = 0.85;
     public static final double SLIDER_UP_SPEED = 0.95;
     public static final double SLIDER_HOLD_POWER = 0.4;
-    public static final int SLIDER_TOP_POSITION = -2800;
+    public static final int SLIDER_TOP_POSITION = -630;
     public static final int SLIDER_LOW_BASKET_HEIGHT = -2206;
     public static final int SLIDER_HIGH_BAR_HEIGHT = -1180;
     public static final int SLIDER_BOTTOM_POSITION = 0;
@@ -29,16 +29,16 @@ public class BotCoefficients {
     public static final double INTAKE_BACKWARD = 1;
 
     public static final double INTAKE_ROTATOR_INIT = 0.44;
-    public static final double INTAKE_ROTATOR_DOWN = 0.369; //0.368;
-    public static final double INTAKE_ROTATOR_DOWN_EXTENT = 0.375;
+    public static final double INTAKE_ROTATOR_DOWN = 0.361; //0.368;
+    public static final double INTAKE_ROTATOR_DOWN_EXTENT = 0.366; //0.375
     public static final double INTAKE_ROTATOR_UP = 0.45;
     public static final double EXTENT_INIT = 0.9;
-    public static final double EXTENT_OUT = 0.3;
+    public static final double EXTENT_OUT = 0.3; //0.3
     public static final double EXTENT_BACK = EXTENT_INIT;
 
-    public static final double TILT_INIT = 0.275 ; //0.27;
-    public static final double TILT_DOWN = 0.275 ;
-    public static final double TILT_UP = 0.52;
+    public static final double TILT_INIT = 0.96 ; //0.275;
+    public static final double TILT_DOWN = 0.96 ; //0.275
+    public static final double TILT_UP = 0.54; //0.52
 
     public static final double GRABBER_INIT = 0.99;
     public static final double GRABBER_OPEN = 0.6;

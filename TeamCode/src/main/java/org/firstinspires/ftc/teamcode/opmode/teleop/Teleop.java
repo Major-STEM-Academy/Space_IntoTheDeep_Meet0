@@ -20,6 +20,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
+
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
 public class Teleop extends LinearOpMode {
@@ -40,6 +42,7 @@ public class Teleop extends LinearOpMode {
     Servo rotator = null;
     Servo grabber = null;
     Servo grabber_tilt = null;
+    TouchSensor touch = null;
 
     /*
     public static double GRABBER_INIT = 0.5;
@@ -121,6 +124,7 @@ public class Teleop extends LinearOpMode {
         grabber_tilt = hardwareMap.servo.get("grabber_tilt");
         grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_INIT);
 
+        touch = hardwareMap.get(TouchSensor.class, "touch_sensor");
 
         /*
         DcMotor lifter = hardwareMap.dcMotor.get("lifter");
@@ -209,7 +213,7 @@ public class Teleop extends LinearOpMode {
                 //slider.setPower(0);
             }
             else {
-                if (slider.getCurrentPosition() > -2) {
+                if ((slider.getCurrentPosition() > -2) || (touch.isPressed())){
                     slider.setPower(0);
                 }
                 else {
