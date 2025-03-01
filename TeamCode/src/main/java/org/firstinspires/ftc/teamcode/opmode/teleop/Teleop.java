@@ -76,13 +76,17 @@ public class Teleop extends LinearOpMode {
     private static final double STEP_INCHES = 1;
     private static final int TICKS_PER_INCH = 20;
 
+    private Motor frontLeft = null;
+    private Motor frontRight = null;
+    private Motor backLeft = null;
+    private Motor backRight = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Motor frontLeft = new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_312);
-        Motor frontRight = new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_312);
-        Motor backLeft = new Motor(hardwareMap, "bl", Motor.GoBILDA.RPM_312);
-        Motor backRight = new Motor(hardwareMap, "br", Motor.GoBILDA.RPM_312);
+        frontLeft = new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_312);
+        frontRight = new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_312);
+        backLeft = new Motor(hardwareMap, "bl", Motor.GoBILDA.RPM_312);
+        backRight = new Motor(hardwareMap, "br", Motor.GoBILDA.RPM_312);
 
         DcMotor slider = hardwareMap.dcMotor.get("slider");
         slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -161,6 +165,7 @@ public class Teleop extends LinearOpMode {
 
         while (!isStopRequested()) {
 
+            /*
             double vertical = gamepad1.left_stick_y;
             double horizontal = gamepad1.left_stick_x;
             double turn = -gamepad1.right_stick_x*0.8;
@@ -176,14 +181,32 @@ public class Teleop extends LinearOpMode {
             backLeft.set(backLeftPower);
             backRight.set(backRightPower);
 
+             */
+            double horizontal = -1.0 * gamepad1.left_stick_x * 0.6;
+            double vertical = gamepad1.left_stick_y * 0.6;
+            double turn = -1.0 * gamepad1.right_stick_x * 0.6;
+
+            double flPower = vertical + turn + horizontal;
+            double frPower = vertical - turn - horizontal;
+            double blPower = vertical + turn - horizontal;
+            double brPower = vertical - turn + horizontal;
+            double scaling = Math.max(1.0,
+                    Math.max(Math.max(Math.abs(flPower), Math.abs(frPower)),
+                            Math.max(Math.abs(blPower), Math.abs(brPower))));
+            flPower = flPower / scaling;
+            frPower = frPower / scaling;
+            blPower = blPower / scaling;
+            brPower = brPower / scaling;
+            setDrivePower(flPower, frPower, blPower, brPower);
+
             // control slider
             // x button for down
             if (gamepad2.x){
+                /*
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
                 telemetry.update();
-                // down
-                //int newSliderTarget = slider.getCurrentPosition() + (int)(STEP_INCHES * TICKS_PER_INCH);
+
                 int newSliderTarget = slider.getCurrentPosition() + 150;
                 if (newSliderTarget <= BotCoefficients.SLIDER_BOTTOM_POSITION) {
                     slider.setTargetPosition(newSliderTarget);
@@ -191,26 +214,37 @@ public class Teleop extends LinearOpMode {
                     slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
                 }
 
-                //slider.setPower(-1.0);
+                 */
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                rotator.setPosition(0.39);
+                slider.setTargetPosition(0);
+                slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
+
             }
             // y button for up
             else if(gamepad2.y){
-                //int newSliderTarget = -(slider.getCurrentPosition() + (int)(STEP_INCHES * TICKS_PER_INCH));
+
+                /*
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
                 telemetry.update();
                 int newSliderTarget = slider.getCurrentPosition() - 120;
-                if (newSliderTarget > -3000) {
-                    //extent.setPosition(0.66);
+                if (newSliderTarget > BotCoefficients.SLIDER_TOP_POSITION) {
                     slider.setTargetPosition(newSliderTarget);
                     slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
                 }
-                //sleep(3000);
-                //while(slider.isBusy() && opModeIsActive()) {
-                    //Loop body can be empty
-                //}
-                //slider.setPower(0);
+
+                 */
+                rotator.setPosition(0.39);
+                slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
+                slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
+                tilt.setPosition(BotCoefficients.TILT_UP);
+
             }
             else {
                 if ((slider.getCurrentPosition() > -2) || (touch.isPressed())){
@@ -261,11 +295,16 @@ public class Teleop extends LinearOpMode {
             }
 
             // for testing purpose
-            /*
+
             if (gamepad1.a) {
-                extent.setPosition(0.5);
+                rotator.setPosition(0.41);
+                slider.setTargetPosition(-80);
+                slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
+                tilt.setPosition(BotCoefficients.TILT_UP);
             }
 
+            /*
             if (gamepad1.b) {
                 extent.setPosition(0.9);
             }
@@ -361,8 +400,32 @@ public class Teleop extends LinearOpMode {
 
     }
 
+    public void setDrivePower(double fl, double fr, double bl, double br) {
+        if (fl > 1.0)
+            fl = 1.0;
+        else if (fl < -1.0)
+            fl = -1.0;
 
+        if (fr > 1.0)
+            fr = 1.0;
+        else if (fr < -1.0)
+            fr = -1.0;
 
+        if (bl > 1.0)
+            bl = 1.0;
+        else if (bl < -1.0)
+            bl = -1.0;
+
+        if (br > 1.0)
+            br = 1.0;
+        else if (br < -1.0)
+            br = -1.0;
+
+        frontLeft.set(fl);
+        frontRight.set(fr);
+        backLeft.set(bl);
+        backRight.set(br);
+    }
 
 
 

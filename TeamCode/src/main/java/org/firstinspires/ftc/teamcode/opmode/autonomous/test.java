@@ -53,8 +53,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name=" Auto Drive: Left Side", group="Robot")
-public class BlueLeftV2 extends AutoCommon {
+@Autonomous(name=" TEST ", group="Robot")
+public class test extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -65,7 +65,7 @@ public class BlueLeftV2 extends AutoCommon {
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        sampleOnePlusThree();
+        //sampleOnePlusThree();
 
     }
 
@@ -226,20 +226,18 @@ public class BlueLeftV2 extends AutoCommon {
         //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
 
         rotator.setPosition(0.41);
-        sleep(300);
         slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.95);
 
-        //tilt.setPosition(BotCoefficients.TILT_UP);
-        tilt.setPosition(0.6);
+        tilt.setPosition(BotCoefficients.TILT_UP);
 
         encoderDrive(0.5,  7,  -7, 5.0);
         //strafe_encoder(0.5, -7, -7, 5.0);
-        encoderDrive(0.5,  -6,  -6, 5.0);
+        encoderDrive(0.5,  -5,  -5, 5.0);
 
-        tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(500);
+        //tilt.setPosition(BotCoefficients.TILT_UP);
+        //sleep(1500);
         tilt.setPosition(BotCoefficients.TILT_DOWN);
         sleep(500);
 
@@ -249,10 +247,10 @@ public class BlueLeftV2 extends AutoCommon {
 
         /////////////////////////////////////////////////////////////////////
         //Get second sample
-        extent.setPosition(0.52);
+        extent.setPosition(0.51);
         //sleep(1000);
-        rotator.setPosition(0.362);
-        encoderDrive(0.5,  -10.5,  10.5, 5.0);
+        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
+        encoderDrive(0.5,  -11,  11, 5.0);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  7,  7, 5.0);
 
@@ -273,19 +271,17 @@ public class BlueLeftV2 extends AutoCommon {
         //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
 
         rotator.setPosition(0.41);
-        sleep(300);
         slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.95);
 
-        tilt.setPosition(0.6);
+        tilt.setPosition(BotCoefficients.TILT_UP);
 
         encoderDrive(0.5,  10,  -10, 5.0);
         encoderDrive(0.5,  -7,  -7, 5.0);
 
-        tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(1000);
-
+        //tilt.setPosition(BotCoefficients.TILT_UP);
+        //sleep(1500);
         tilt.setPosition(BotCoefficients.TILT_DOWN);
         sleep(500);
 
@@ -298,7 +294,7 @@ public class BlueLeftV2 extends AutoCommon {
         //Get third sample
         extent.setPosition(0.46);
         //sleep(1000);
-        rotator.setPosition(0.362);
+        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
         encoderDrive(0.5,  -15,  15, 5.0);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  5,  5, 5.0);
@@ -320,7 +316,6 @@ public class BlueLeftV2 extends AutoCommon {
         //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
 
         rotator.setPosition(0.41);
-        sleep(300);
         slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.95);
@@ -331,7 +326,7 @@ public class BlueLeftV2 extends AutoCommon {
         encoderDrive(0.4,  -4,  -4, 5.0);
 
         //tilt.setPosition(BotCoefficients.TILT_UP);
-        //sleep(1000);
+        //sleep(1500);
         tilt.setPosition(BotCoefficients.TILT_DOWN);
         sleep(500);
 
