@@ -50,4 +50,10 @@ public class BotCoefficients {
     public static final double GRABBER_TILT_DOWN = 0.38;
 
     public static final int ACTUATOR_TOP = 3100;
+    public static final double SWEEPER_INIT = 0.99;
+    public static final double SWEEPER_EXTENT = 0.4;
+
+    public static final int ELBOW_READY = 1200;
+    public static final int ELBOW_LIFT = 2400;
+
 }

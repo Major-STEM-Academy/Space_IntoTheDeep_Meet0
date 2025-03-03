@@ -42,6 +42,7 @@ public class Teleop extends LinearOpMode {
     Servo rotator = null;
     Servo grabber = null;
     Servo grabber_tilt = null;
+    Servo sweeper = null;
     TouchSensor touch = null;
 
     /*
@@ -76,17 +77,40 @@ public class Teleop extends LinearOpMode {
     private static final double STEP_INCHES = 1;
     private static final int TICKS_PER_INCH = 20;
 
+    private DcMotor rightElbow = null;
+    private DcMotor leftElbow = null;
     private Motor frontLeft = null;
     private Motor frontRight = null;
     private Motor backLeft = null;
     private Motor backRight = null;
+    private boolean sweeperExtent = false;
+    private boolean tiltDown = false;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        double sweeper_starttime = 0;
+        double tiltdown_starttime = 0;
+
         frontLeft = new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_312);
         frontRight = new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_312);
         backLeft = new Motor(hardwareMap, "bl", Motor.GoBILDA.RPM_312);
         backRight = new Motor(hardwareMap, "br", Motor.GoBILDA.RPM_312);
+
+        rightElbow = hardwareMap.dcMotor.get("rightElbow");
+        rightElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightElbow.setPower(0);
+
+        leftElbow = hardwareMap.dcMotor.get("leftElbow");
+        leftElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftElbow.setPower(0);
+
+        rightElbow.setDirection(DcMotorSimple.Direction.REVERSE);
 
         DcMotor slider = hardwareMap.dcMotor.get("slider");
         slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -127,6 +151,9 @@ public class Teleop extends LinearOpMode {
 
         grabber_tilt = hardwareMap.servo.get("grabber_tilt");
         grabber_tilt.setPosition(BotCoefficients.GRABBER_TILT_INIT);
+
+        sweeper = hardwareMap.servo.get("sweeper");
+        sweeper.setPosition(BotCoefficients.SWEEPER_INIT);
 
         touch = hardwareMap.get(TouchSensor.class, "touch_sensor");
 
@@ -201,7 +228,7 @@ public class Teleop extends LinearOpMode {
 
             // control slider
             // x button for down
-            if (gamepad2.x){
+            if (gamepad2.x && !tiltDown){
                 /*
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("slider", "position (%d)", slider.getCurrentPosition());
@@ -215,14 +242,23 @@ public class Teleop extends LinearOpMode {
                 }
 
                  */
-                tilt.setPosition(BotCoefficients.TILT_DOWN);
-                tilt.setPosition(BotCoefficients.TILT_DOWN);
-                tilt.setPosition(BotCoefficients.TILT_DOWN);
-                rotator.setPosition(0.39);
-                slider.setTargetPosition(0);
-                slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
+                /*
+                if (tilt.getPosition() > 0.9) {
 
+                    rotator.setPosition(0.39);
+                    slider.setTargetPosition(0);
+                    slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
+                }
+                else {
+                    tilt.setPosition(BotCoefficients.TILT_DOWN);
+                }
+
+                 */
+
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                tiltDown = true;
+                tiltdown_starttime = runtime.milliseconds();
             }
             // y button for up
             else if(gamepad2.y){
@@ -253,6 +289,14 @@ public class Teleop extends LinearOpMode {
                 else {
                     slider.setPower(BotCoefficients.SLIDER_HOLD_POWER);
                 }
+            }
+
+            if (tiltDown && (runtime.milliseconds() - tiltdown_starttime > 500)) {
+                rotator.setPosition(0.39);
+                slider.setTargetPosition(0);
+                slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
+                tiltDown = false;
             }
 
             // up slider to low basket and high bar level
@@ -304,11 +348,15 @@ public class Teleop extends LinearOpMode {
                 tilt.setPosition(BotCoefficients.TILT_UP);
             }
 
-            /*
-            if (gamepad1.b) {
-                extent.setPosition(0.9);
+            if (gamepad1.b && !sweeperExtent) {
+                    sweeper.setPosition(BotCoefficients.SWEEPER_EXTENT);
+                    sweeperExtent = true;
+                    sweeper_starttime = runtime.seconds();
             }
-            */
+            if (sweeperExtent && (runtime.seconds()-sweeper_starttime > 1)) {
+                sweeper.setPosition(BotCoefficients.SWEEPER_INIT);
+                sweeperExtent = false;
+            }
 
             // control grabber
             if (gamepad1.right_bumper) {
@@ -373,19 +421,37 @@ public class Teleop extends LinearOpMode {
             }
 
             // for testing purpose
-            /*
-            if (gamepad1.right_bumper) {
-                // open
-                //tilt.setPosition(BotCoefficients.tiltUp);
-                tilt.setPosition(0.58);
+
+            if (gamepad1.dpad_up) {
+                rightElbow.setTargetPosition(BotCoefficients.ELBOW_READY);
+                rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightElbow.setPower(0.2);
+
+                leftElbow.setTargetPosition(BotCoefficients.ELBOW_READY);
+                leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftElbow.setPower(0.2);
             }
-            if (gamepad1.right_trigger > 0.3){
-                //close
-                //tilt.setPosition(BotCoefficients.tiltDown);
-                tilt.setPosition(0.37);
+            if (gamepad1.dpad_right){
+                rightElbow.setTargetPosition(BotCoefficients.ELBOW_LIFT);
+                rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightElbow.setPower(1);
+
+                leftElbow.setTargetPosition(BotCoefficients.ELBOW_LIFT);
+                leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftElbow.setPower(1);
+
+            }
+            if (gamepad1.dpad_down) {
+                rightElbow.setTargetPosition(0);
+                rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightElbow.setPower(0.2);
+
+                leftElbow.setTargetPosition(0);
+                leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftElbow.setPower(0.2);
             }
 
-             */
+
             //control grabber
             if (gamepad2.dpad_up) {
                 intake.setPosition(BotCoefficients.INTAKE_FORWARD);
