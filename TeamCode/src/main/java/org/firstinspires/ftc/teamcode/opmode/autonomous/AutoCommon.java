@@ -180,18 +180,20 @@ public abstract class AutoCommon extends LinearOpMode {
     public double locateSample()  {
         double adjustment = 0.0;
         double expectedX = 2.0;
-        for (int i=0; i<100; i++) {
+        for (int i=0; i<1; i++) {
             LLResult result = limelight.getLatestResult();
             if ((result != null) && (result.isValid())) {
                 List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
                 for (LLResultTypes.ColorResult cr : colorResults) {
                     double x = cr.getTargetXDegrees();
                     double y = cr.getTargetYDegrees();
+                    double tx = result.getTx();
+                    double ty = result.getTy();
                     telemetry.addData("Color", "X: %.2f, Y: %.2f", x, y);
-                    if ((x > -5) && (x < 2)) {
+                    if ((tx >= -3) && (tx <= 3)) {
                         adjustment = 0;
                     }
-                    else if (x > 2) {
+                    else if (tx > 3) {
                         adjustment = 1;
                     }
                     else {
