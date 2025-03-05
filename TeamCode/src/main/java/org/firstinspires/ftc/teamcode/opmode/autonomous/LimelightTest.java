@@ -53,8 +53,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name=" Auto Drive: Left Side", group="Robot")
-public class BlueLeftV2 extends AutoCommon {
+@Autonomous(name=" Limelight Test", group="Robot")
+public class LimelightTest extends AutoCommon {
 
     @Override
     public void runOpMode() {
@@ -65,8 +65,23 @@ public class BlueLeftV2 extends AutoCommon {
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+        rotator.setPosition(0.41);
+        //sleep(5000);
+        for (int i=0; i<10; i++) {
+            double adjustment = locateSample();
+            //telemetry.addData("adjustment:", " (%f)", adjustment);    //
+            //telemetry.update();
+            if (adjustment != 0) {
+                encoderDrive(0.5, -adjustment, adjustment, 5.0);
+            }
+
+            sleep(2000);
+        }
+
+        sleep(10000);
         //sampleOnePlusThree();
-        sampleOnePlusThree_camera();
+        //sampleOnePlusThree_camera();
 
     }
 

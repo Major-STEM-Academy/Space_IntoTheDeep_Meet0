@@ -34,6 +34,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.TankDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.tuning.TuningOpModes;
 /*
  * This OpMode illustrates the concept of driving a path based on time.
  * The code is structured as a LinearOpMode
@@ -57,14 +65,43 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 public class test extends AutoCommon {
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
-        initAll();
+        //initAll();
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        //waitForStart();
+        Pose2d beginPose = new Pose2d(0, 0, 0);
+        if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
+            telemetry.addData("Drive Class", "Mecanum Drive");    //
+            telemetry.update();
+            MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
+
+            waitForStart();
+
+            Actions.runBlocking(
+                    drive.actionBuilder(beginPose)
+                            .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                            .splineTo(new Vector2d(0, 60), Math.PI)
+                            .build());
+        } else if (TuningOpModes.DRIVE_CLASS.equals(TankDrive.class)) {
+            telemetry.addData("Drive Class", "Tank Drive");    //
+            telemetry.update();
+            TankDrive drive = new TankDrive(hardwareMap, beginPose);
+
+            waitForStart();
+
+            Actions.runBlocking(
+                    drive.actionBuilder(beginPose)
+                            .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                            .splineTo(new Vector2d(0, 60), Math.PI)
+                            .build());
+        } else {
+            throw new RuntimeException();
+        }
+        sleep(5000);
         //sampleOnePlusThree();
 
     }

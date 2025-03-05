@@ -79,24 +79,38 @@ public class Teleop extends LinearOpMode {
 
     private DcMotor rightElbow = null;
     private DcMotor leftElbow = null;
-    private Motor frontLeft = null;
-    private Motor frontRight = null;
-    private Motor backLeft = null;
-    private Motor backRight = null;
+    private DcMotor frontLeft = null;
+    private DcMotor frontRight = null;
+    private DcMotor backLeft = null;
+    private DcMotor backRight = null;
     private boolean sweeperExtent = false;
+    private double sweeper_starttime = 0;
     private boolean tiltDown = false;
+    private double tiltdown_starttime = 0;
+    private boolean processSampleHighBasket = false;
+    private double processSampleHighBasket_starttime = 0;
+    private boolean processSampleLowBasket = false;
+    private double processSampleLowBasket_starttime = 0;
+
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        double sweeper_starttime = 0;
-        double tiltdown_starttime = 0;
 
+
+        /*
         frontLeft = new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_312);
         frontRight = new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_312);
         backLeft = new Motor(hardwareMap, "bl", Motor.GoBILDA.RPM_312);
         backRight = new Motor(hardwareMap, "br", Motor.GoBILDA.RPM_312);
+
+         */
+
+        frontLeft = hardwareMap.dcMotor.get("fl");
+        frontRight = hardwareMap.dcMotor.get("fr");
+        backLeft = hardwareMap.dcMotor.get("bl");
+        backRight = hardwareMap.dcMotor.get("br");
 
         rightElbow = hardwareMap.dcMotor.get("rightElbow");
         rightElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -166,13 +180,13 @@ public class Teleop extends LinearOpMode {
         grabberL = hardwareMap.servo.get("grabberL");
         */
 
-        frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        backRight.setInverted(true);
-        frontRight.setInverted(true);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);;
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);;
 
         controller = new PIDController(p, i, d);
 
@@ -280,7 +294,8 @@ public class Teleop extends LinearOpMode {
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
                 tilt.setPosition(BotCoefficients.TILT_UP);
-
+                processSampleHighBasket = true;
+                processSampleHighBasket_starttime = runtime.milliseconds();
             }
             else {
                 if ((slider.getCurrentPosition() > -2) || (touch.isPressed())){
@@ -290,7 +305,13 @@ public class Teleop extends LinearOpMode {
                     slider.setPower(BotCoefficients.SLIDER_HOLD_POWER);
                 }
             }
-
+            // put sample in the high basket, ready to come down
+            if (processSampleHighBasket && (runtime.milliseconds() - processSampleHighBasket_starttime > 1000)) {
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                tiltDown = true;
+                tiltdown_starttime = runtime.milliseconds();
+                processSampleHighBasket = false;
+            }
             if (tiltDown && (runtime.milliseconds() - tiltdown_starttime > 500)) {
                 rotator.setPosition(0.39);
                 slider.setTargetPosition(0);
@@ -299,7 +320,7 @@ public class Teleop extends LinearOpMode {
                 tiltDown = false;
             }
 
-            // up slider to low basket and high bar level
+            // Control actuator up and down
             if (gamepad1.y) {
 
                     actuator.setTargetPosition(BotCoefficients.ACTUATOR_TOP);
@@ -338,25 +359,48 @@ public class Teleop extends LinearOpMode {
                 extent.setPosition(BotCoefficients.EXTENT_OUT);
             }
 
-            // for testing purpose
+            // Score Sample in the low backet
 
             if (gamepad1.a) {
-                rotator.setPosition(0.41);
+                rotator.setPosition(0.39);
                 slider.setTargetPosition(-80);
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
                 tilt.setPosition(BotCoefficients.TILT_UP);
+
+                processSampleLowBasket = true;
+                processSampleLowBasket_starttime = runtime.milliseconds();
             }
 
-            if (gamepad1.b && !sweeperExtent) {
+            if (processSampleLowBasket && (runtime.milliseconds() - processSampleLowBasket_starttime > 1000)) {
+                tilt.setPosition(BotCoefficients.TILT_DOWN);
+                tiltDown = true;
+                tiltdown_starttime = runtime.milliseconds();
+                processSampleLowBasket = false;
+            }
+
+            // Activate sweeper to push samples in the submersible
+            if (gamepad1.b) {
+                if (!sweeperExtent && (runtime.milliseconds()-sweeper_starttime > 500)) {
                     sweeper.setPosition(BotCoefficients.SWEEPER_EXTENT);
                     sweeperExtent = true;
-                    sweeper_starttime = runtime.seconds();
+                    sweeper_starttime = runtime.milliseconds();
+                }
+                else {
+                    if (sweeperExtent && (runtime.milliseconds()-sweeper_starttime > 500)) {
+                        sweeper.setPosition(BotCoefficients.SWEEPER_INIT);
+                        sweeperExtent = false;
+                        sweeper_starttime = runtime.milliseconds();
+                    }
+                }
             }
+            /*
             if (sweeperExtent && (runtime.seconds()-sweeper_starttime > 1)) {
                 sweeper.setPosition(BotCoefficients.SWEEPER_INIT);
                 sweeperExtent = false;
             }
+
+             */
 
             // control grabber
             if (gamepad1.right_bumper) {
@@ -422,7 +466,9 @@ public class Teleop extends LinearOpMode {
 
             // for testing purpose
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_up){
+                encoderDrive(0.2, 2.5, 2.5, 3000);
+
                 rightElbow.setTargetPosition(BotCoefficients.ELBOW_READY);
                 rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightElbow.setPower(0.2);
@@ -430,8 +476,7 @@ public class Teleop extends LinearOpMode {
                 leftElbow.setTargetPosition(BotCoefficients.ELBOW_READY);
                 leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftElbow.setPower(0.2);
-            }
-            if (gamepad1.dpad_right){
+
                 rightElbow.setTargetPosition(BotCoefficients.ELBOW_LIFT);
                 rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightElbow.setPower(1);
@@ -439,8 +484,10 @@ public class Teleop extends LinearOpMode {
                 leftElbow.setTargetPosition(BotCoefficients.ELBOW_LIFT);
                 leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftElbow.setPower(1);
-
+                sleep(2000);
+                encoderDrive(0.4, 50, 50, 10000);
             }
+
             if (gamepad1.dpad_down) {
                 rightElbow.setTargetPosition(0);
                 rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -487,12 +534,80 @@ public class Teleop extends LinearOpMode {
         else if (br < -1.0)
             br = -1.0;
 
-        frontLeft.set(fl);
-        frontRight.set(fr);
-        backLeft.set(bl);
-        backRight.set(br);
+        frontLeft.setPower(fl);
+        frontRight.setPower(fr);
+        backLeft.setPower(bl);
+        backRight.setPower(br);
     }
 
+    public void encoderDrive(double speed,
+                             double leftInches, double rightInches,
+                             double timeoutS) {
+        int newBackLeftTarget;
+        int newBackRightTarget;
+        int newFrontLeftTarget;
+        int newFrontRightTarget;
+
+
+        // Ensure that the OpMode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newBackLeftTarget = backLeft.getCurrentPosition() + (int)(leftInches * 39.79);
+            newBackRightTarget = backRight.getCurrentPosition() + (int)(rightInches * 39.79);
+            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int)(leftInches * 39.79);
+            newFrontRightTarget = frontRight.getCurrentPosition() + (int)(rightInches * 39.79);
+            backLeft.setTargetPosition(newBackLeftTarget);
+            backRight.setTargetPosition(newBackRightTarget);
+            frontLeft.setTargetPosition(newFrontLeftTarget);
+            frontRight.setTargetPosition(newFrontRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            backLeft.setPower(Math.abs(speed));
+            backRight.setPower(Math.abs(speed));
+            frontLeft.setPower(Math.abs(speed));
+            frontRight.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (backLeft.isBusy() && backRight.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Running to",  " %7d :%7d", newBackLeftTarget,  newBackRightTarget);
+                telemetry.addData("Currently at",  " at %7d :%7d",
+                        backLeft.getCurrentPosition(), backRight.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            backLeft.setPower(0);
+            backRight.setPower(0);
+            frontLeft.setPower(0);
+            frontRight.setPower(0);
+
+
+            // Turn off RUN_TO_POSITION
+            backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            sleep(250);   // optional pause after each move.
+        }
+    }
 
 
 }

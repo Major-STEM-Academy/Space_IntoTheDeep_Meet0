@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -42,6 +45,7 @@ public abstract class AutoCommon extends LinearOpMode {
     public Servo rotator = null;
     public Servo grabber = null;
     public Servo grabber_tilt = null;
+    private Limelight3A limelight = null;
     protected ElapsedTime     runtime = new ElapsedTime();
 
     // For motot encoders
@@ -106,6 +110,7 @@ public abstract class AutoCommon extends LinearOpMode {
         initLinearSlider();
         initMotor();
         initIMU();
+        initSensors();
     }
     public void initServo() {
         intake = hardwareMap.servo.get("intake");
@@ -166,39 +171,41 @@ public abstract class AutoCommon extends LinearOpMode {
         actuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         actuator.setPower(0);
     }
-    public void extendSliderToHighBar() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
+
+    public void initSensors() {
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.pipelineSwitch(0);
+        limelight.start();
+    }
+    public double locateSample()  {
+        double adjustment = 0.0;
+        double expectedX = 2.0;
+        for (int i=0; i<100; i++) {
+            LLResult result = limelight.getLatestResult();
+            if ((result != null) && (result.isValid())) {
+                List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
+                for (LLResultTypes.ColorResult cr : colorResults) {
+                    double x = cr.getTargetXDegrees();
+                    double y = cr.getTargetYDegrees();
+                    telemetry.addData("Color", "X: %.2f, Y: %.2f", x, y);
+                    if ((x > -5) && (x < 2)) {
+                        adjustment = 0;
+                    }
+                    else if (x > 2) {
+                        adjustment = 1;
+                    }
+                    else {
+                        adjustment = -1;
+                    }
+                    //adjustment = (x - expectedX) / 10;
+                }
+                telemetry.update();
+            }
+        }
+        return adjustment;
     }
 
-    public void hangSpeciman_old() {
-        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+400);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.1);
-        sleep(900);
-        grabber.setPosition(BotCoefficients.grabberSemiOpen);
-        //tilt.setPosition(BotCoefficients.tiltDown);
-    }
 
-    public void hangSpeciman() {
-
-
-        //grabber.setPosition(BotCoefficients.grabberSemiOpen);
-        //tilt.setPosition(BotCoefficients.tiltDown);
-    }
-
-    public void touchLowBar() {
-        tilt.setPosition(BotCoefficients.tiltUp);
-        extendSliderToHighBar();
-        encoderDrive(0.2,  20,  20, 5.0);
-        slider.setTargetPosition(BotCoefficients.SLIDER_HIGH_BAR_HEIGHT+650);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.2);
-        sleep(900);
-        //grabber.setPosition(BotCoefficients.grabberSemiOpen);
-        //tilt.setPosition(BotCoefficients.tiltDown);
-    }
 public void driveAndHangSpeciman() {
     //extendSliderToHighBar();
     //sleep(1000);
@@ -577,10 +584,9 @@ public void getSpecimen() {
                     (backleftDrive.isBusy() && backrightDrive.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Running to",  " %7d :%7d", newBackLeftTarget,  newBackRightTarget);
-                telemetry.addData("Currently at",  " at %7d :%7d",
-                        backleftDrive.getCurrentPosition(), backrightDrive.getCurrentPosition());
-                telemetry.update();
+                //telemetry.addData("Running to",  " %7d :%7d", newBackLeftTarget,  newBackRightTarget);
+                //telemetry.addData("Currently at",  " at %7d :%7d",backleftDrive.getCurrentPosition(), backrightDrive.getCurrentPosition());
+                //telemetry.update();
             }
 
             // Stop all motion;
