@@ -1,30 +1,20 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.StartEndCommand;
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.RevIMU;
-import com.arcrobotics.ftclib.hardware.ServoEx;
-import com.arcrobotics.ftclib.hardware.SimpleServo;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
 
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
-public class Teleop extends LinearOpMode {
+public class TeleopTest extends LinearOpMode {
 
     /*
     private enum State {
@@ -214,6 +204,7 @@ public class Teleop extends LinearOpMode {
 
         waitForStart();
 
+
         while (!isStopRequested()) {
 
             /*
@@ -366,7 +357,7 @@ public class Teleop extends LinearOpMode {
             }
 
             if (gamepad2.b) {
-                extent.setPosition(BotCoefficients.EXTENT_OUT);
+                extent.setPosition(0.6);
             }
 
             // Score Sample in the low backet
@@ -466,7 +457,7 @@ public class Teleop extends LinearOpMode {
             if ( gamepad2.right_bumper) {
                 // open
                 //tilt.setPosition(BotCoefficients.tiltUp);
-                tilt.setPosition(BotCoefficients.TILT_UP);
+                tilt.setPosition(0.6);
             }
             if  (gamepad2.right_trigger > 0.3){
                 //close

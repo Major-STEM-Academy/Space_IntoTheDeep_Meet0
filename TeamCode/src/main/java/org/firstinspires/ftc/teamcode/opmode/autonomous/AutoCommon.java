@@ -125,7 +125,7 @@ public abstract class AutoCommon extends LinearOpMode {
         extent.setPosition(BotCoefficients.EXTENT_INIT);
 
         rotator = hardwareMap.servo.get("rotator");
-        rotator.setPosition(0.45);
+        rotator.setPosition(0.47);
 
         grabber = hardwareMap.servo.get("grabber");
         grabber.setPosition(BotCoefficients.GRABBER_INIT);
@@ -177,33 +177,31 @@ public abstract class AutoCommon extends LinearOpMode {
         limelight.pipelineSwitch(0);
         limelight.start();
     }
+
+    public void stopLimelight() {
+        limelight.stop();
+    }
     public double locateSample()  {
-        double adjustment = 0.0;
-        double expectedX = 2.0;
-        for (int i=0; i<1; i++) {
-            LLResult result = limelight.getLatestResult();
-            if ((result != null) && (result.isValid())) {
-                List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
-                for (LLResultTypes.ColorResult cr : colorResults) {
-                    double x = cr.getTargetXDegrees();
-                    double y = cr.getTargetYDegrees();
-                    double tx = result.getTx();
-                    double ty = result.getTy();
-                    telemetry.addData("Color", "X: %.2f, Y: %.2f", x, y);
-                    if ((tx >= -3) && (tx <= 3)) {
-                        adjustment = 0;
-                    }
-                    else if (tx > 3) {
-                        adjustment = 1;
-                    }
-                    else {
-                        adjustment = -1;
-                    }
-                    //adjustment = (x - expectedX) / 10;
+        double adjustment = -999;
+
+        LLResult result = limelight.getLatestResult();
+        if ((result != null) && (result.isValid())) {
+                double tx = result.getTx();
+                double ty = result.getTy();
+                //telemetry.addData("Color", "tX: %.2f, tY: %.2f", tx, ty);
+                if ((tx >= -3) && (tx <= 3)) {
+                    adjustment = 0;
                 }
-                telemetry.update();
-            }
+                else if (tx > 3) {
+                    adjustment = 1;
+                }
+                else {
+                    adjustment = -1;
+                }
+                //adjustment = (x - expectedX) / 10;
         }
+        //telemetry.update();
+
         return adjustment;
     }
 

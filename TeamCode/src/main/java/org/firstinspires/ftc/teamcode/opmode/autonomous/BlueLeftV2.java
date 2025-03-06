@@ -259,16 +259,25 @@ public class BlueLeftV2 extends AutoCommon {
         slider.setPower(0.9);
         //////////////////////////////////////////////////////////////
         // Get first sample
-        extent.setPosition(0.42);
+        extent.setPosition(0.41);
         //sleep(1000);
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
+        rotator.setPosition(0.37);
 
         encoderDrive(0.5,  -7,  7, 5.0);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  6,  6, 5.0);
 
-        //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        //sleep(200);
+        // check if we got sample
+        intake.setPosition(0.41);
+        double adjustment = locateSample();
+        if (adjustment != -999) {
+            encoderDrive(0.5,  -adjustment,  adjustment, 5.0);
+            rotator.setPosition(0.370);
+            intake.setPosition(BotCoefficients.INTAKE_FORWARD);
+            encoderDrive(0.3,  2,  2, 5.0);
+            encoderDrive(0.3,  -2,  -2, 5.0);
+        }
+        ////////////////////////
 
         intake.setPosition(BotCoefficients.INTAKE_INIT);
 
@@ -297,7 +306,7 @@ public class BlueLeftV2 extends AutoCommon {
         encoderDrive(0.5,  -6,  -6, 5.0);
 
         tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(500);
+        sleep(800);
         tilt.setPosition(BotCoefficients.TILT_DOWN);
         sleep(500);
 
@@ -309,18 +318,30 @@ public class BlueLeftV2 extends AutoCommon {
         //Get second sample
         extent.setPosition(0.52);
         //sleep(1000);
-        rotator.setPosition(0.362);
+        rotator.setPosition(0.41);
         encoderDrive(0.5,  -10.5,  10.5, 5.0);
-        double adjustment = locateSample();
-        if (adjustment != 0) {
+        adjustment = locateSample();
+        if ((adjustment != 0) && (adjustment != -999)) {
             encoderDrive(0.5,  -adjustment,  adjustment, 5.0);
         }
+        rotator.setPosition(0.370);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  7,  7, 5.0);
 
         //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(500);
+        sleep(300);
 
+        // check if we got sample
+        intake.setPosition(0.41);
+        adjustment = locateSample();
+        if (adjustment != -999) {
+            encoderDrive(0.5,  -adjustment,  adjustment, 5.0);
+            rotator.setPosition(0.370);
+            intake.setPosition(BotCoefficients.INTAKE_FORWARD);
+            encoderDrive(0.3,  2,  2, 5.0);
+            encoderDrive(0.3,  -2,  -2, 5.0);
+        }
+        ////////////////////////
         intake.setPosition(BotCoefficients.INTAKE_INIT);
 
         rotator.setPosition(0.43);
@@ -342,8 +363,8 @@ public class BlueLeftV2 extends AutoCommon {
 
         tilt.setPosition(0.6);
 
-        encoderDrive(0.5,  10,  -10, 5.0);
-        encoderDrive(0.5,  -7,  -7, 5.0);
+        encoderDrive(0.5,  9,  -9, 5.0);
+        encoderDrive(0.5,  -5,  -5, 5.0);
 
         tilt.setPosition(BotCoefficients.TILT_UP);
         sleep(1000);
@@ -360,13 +381,13 @@ public class BlueLeftV2 extends AutoCommon {
         //Get third sample
         extent.setPosition(0.46);
         //sleep(1000);
-        rotator.setPosition(0.362);
+        rotator.setPosition(0.371);
         encoderDrive(0.5,  -15,  15, 5.0);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  5,  5, 5.0);
 
         //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(200);
+        //sleep(200);
 
         intake.setPosition(BotCoefficients.INTAKE_INIT);
 
@@ -402,8 +423,15 @@ public class BlueLeftV2 extends AutoCommon {
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.8);
 
-        sleep(5000);
+        // park
+        stopLimelight();
+        extent.setPosition(0.6);
+        encoderDrive(0.7,  50,  50, 5.0);
+        encoderDrive(0.6,  -30,  30, 5.0);
+        tilt.setPosition(BotCoefficients.TILT_UP);
+        encoderDrive(0.5,  -25,  -25, 5.0);
 
+        sleep(5000);
     }
 
 }
