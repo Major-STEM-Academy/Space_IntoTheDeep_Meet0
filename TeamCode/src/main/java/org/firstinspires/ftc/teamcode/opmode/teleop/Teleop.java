@@ -372,6 +372,7 @@ public class Teleop extends LinearOpMode {
             // Score Sample in the low backet
 
             if (gamepad1.a) {
+                extent.setPosition(0.66);
                 rotator.setPosition(0.39);
                 slider.setTargetPosition(-80);
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -476,7 +477,7 @@ public class Teleop extends LinearOpMode {
 
             // for testing purpose
 
-            if (gamepad1.dpad_up){
+            if (gamepad1.dpad_up && gamepad1.x){
                 encoderDrive(0.2, 2.5, 2.5, 3000);
 
                 rightElbow.setTargetPosition(BotCoefficients.ELBOW_READY);
@@ -520,6 +521,15 @@ public class Teleop extends LinearOpMode {
                 intake.setPosition(BotCoefficients.INTAKE_INIT);
             }
         }
+
+        rightElbow.setTargetPosition(0);
+        rightElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightElbow.setPower(0.2);
+
+        leftElbow.setTargetPosition(0);
+        leftElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftElbow.setPower(0.2);
+        sleep(5000);
 
     }
 

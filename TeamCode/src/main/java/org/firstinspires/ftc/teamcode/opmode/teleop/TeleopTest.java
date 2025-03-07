@@ -294,7 +294,7 @@ public class TeleopTest extends LinearOpMode {
                 slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_UP_SPEED));
-                tilt.setPosition(BotCoefficients.TILT_UP);
+                tilt.setPosition(0.55);
                 processSampleHighBasket = true;
                 processSampleHighBasket_starttime = runtime.milliseconds();
             }
@@ -307,12 +307,15 @@ public class TeleopTest extends LinearOpMode {
                 }
             }
             // put sample in the high basket, ready to come down
+            /*
             if (processSampleHighBasket && (runtime.milliseconds() - processSampleHighBasket_starttime > 1000)) {
                 tilt.setPosition(BotCoefficients.TILT_DOWN);
                 tiltDown = true;
                 tiltdown_starttime = runtime.milliseconds();
                 processSampleHighBasket = false;
             }
+
+             */
             if (tiltDown && (runtime.milliseconds() - tiltdown_starttime > 500)) {
                 rotator.setPosition(0.39);
                 slider.setTargetPosition(0);
@@ -320,6 +323,8 @@ public class TeleopTest extends LinearOpMode {
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
                 tiltDown = false;
             }
+
+
 
             // Control actuator up and down
             if (gamepad1.y) {

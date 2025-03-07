@@ -320,6 +320,8 @@ public class BlueLeftV2 extends AutoCommon {
         //sleep(1000);
         rotator.setPosition(0.41);
         encoderDrive(0.5,  -10.5,  10.5, 5.0);
+
+        // do adjustment
         adjustment = locateSample();
         if ((adjustment != 0) && (adjustment != -999)) {
             encoderDrive(0.5,  -adjustment,  adjustment, 5.0);
@@ -382,7 +384,7 @@ public class BlueLeftV2 extends AutoCommon {
         extent.setPosition(0.46);
         //sleep(1000);
         rotator.setPosition(0.371);
-        encoderDrive(0.5,  -15,  15, 5.0);
+        encoderDrive(0.5,  -14.5,  14.5, 5.0);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
         encoderDrive(0.3,  5,  5, 5.0);
 

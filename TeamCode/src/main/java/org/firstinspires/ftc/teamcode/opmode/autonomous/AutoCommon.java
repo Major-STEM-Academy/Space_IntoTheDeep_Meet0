@@ -258,7 +258,7 @@ public void getSpecimen() {
     actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     actuator.setPower(0.8);
     encoderDrive(0.5,  24,  24, 5.0);
-    strafe_encoder(0.4, 42, 42, 5.0);
+    strafe_encoder(0.4, 55, 55, 5.0);
 }
     public void putSamplesInHighBacket() {
 

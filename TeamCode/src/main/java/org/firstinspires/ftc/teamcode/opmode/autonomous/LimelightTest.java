@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
@@ -54,6 +55,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
  */
 
 @Autonomous(name=" Limelight Test", group="Robot")
+@Disabled
 public class LimelightTest extends AutoCommon {
 
     @Override
