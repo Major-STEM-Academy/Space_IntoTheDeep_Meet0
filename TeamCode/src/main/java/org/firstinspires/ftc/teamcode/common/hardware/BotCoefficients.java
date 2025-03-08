@@ -37,8 +37,8 @@ public class BotCoefficients {
     public static final double EXTENT_OUT = 0.3; //0.3
     public static final double EXTENT_BACK = EXTENT_INIT;
 
-    public static final double TILT_INIT = 0.93 ; //0.275;
-    public static final double TILT_DOWN = 0.93 ; //0.275
+    public static final double TILT_INIT = 0.91 ; //0.275;
+    public static final double TILT_DOWN = 0.91 ; //0.275
     public static final double TILT_UP = 0.54; //0.52
 
     public static final double GRABBER_INIT = 0.99;
