@@ -316,14 +316,14 @@ public class Teleop extends LinearOpMode {
                 }
             }
             // put sample in the high basket, ready to come down
-            if (processSampleHighBasket && (runtime.milliseconds() - processSampleHighBasket_starttime > 1000)) {
+            if (processSampleHighBasket && (runtime.milliseconds() - processSampleHighBasket_starttime > 1700)) {
                 tilt.setPosition(BotCoefficients.TILT_DOWN);
                 tiltDown = true;
                 tiltdown_starttime = runtime.milliseconds();
                 processSampleHighBasket = false;
             }
             if (tiltDown && (runtime.milliseconds() - tiltdown_starttime > 500)) {
-                rotator.setPosition(0.39);
+                rotator.setPosition(0.4);
                 slider.setTargetPosition(0);
                 slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slider.setPower(Math.abs(BotCoefficients.SLIDER_DOWN_SPEED));
@@ -383,7 +383,7 @@ public class Teleop extends LinearOpMode {
                 processSampleLowBasket_starttime = runtime.milliseconds();
             }
 
-            if (processSampleLowBasket && (runtime.milliseconds() - processSampleLowBasket_starttime > 1000)) {
+            if (processSampleLowBasket && (runtime.milliseconds() - processSampleLowBasket_starttime > 1500)) {
                 tilt.setPosition(BotCoefficients.TILT_DOWN);
                 tiltDown = true;
                 tiltdown_starttime = runtime.milliseconds();

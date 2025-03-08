@@ -32,13 +32,13 @@ public class BotCoefficients {
     public static final double INTAKE_ROTATOR_INIT = 0.44;
     public static final double INTAKE_ROTATOR_DOWN = 0.368; //0.368;
     public static final double INTAKE_ROTATOR_DOWN_EXTENT = 0.372; //0.375
-    public static final double INTAKE_ROTATOR_UP = 0.47;
+    public static final double INTAKE_ROTATOR_UP = 0.46;
     public static final double EXTENT_INIT = 0.95;
     public static final double EXTENT_OUT = 0.3; //0.3
     public static final double EXTENT_BACK = EXTENT_INIT;
 
-    public static final double TILT_INIT = 0.95 ; //0.275;
-    public static final double TILT_DOWN = 0.95 ; //0.275
+    public static final double TILT_INIT = 0.93 ; //0.275;
+    public static final double TILT_DOWN = 0.93 ; //0.275
     public static final double TILT_UP = 0.54; //0.52
 
     public static final double GRABBER_INIT = 0.99;
@@ -50,7 +50,7 @@ public class BotCoefficients {
     public static final double GRABBER_TILT_DOWN = 0.38;
 
     public static final int ACTUATOR_TOP = 3100;
-    public static final double SWEEPER_INIT = 0.7;
+    public static final double SWEEPER_INIT = 0.8;
     public static final double SWEEPER_EXTENT = 0.4;
 
     public static final int ELBOW_READY = 1200;

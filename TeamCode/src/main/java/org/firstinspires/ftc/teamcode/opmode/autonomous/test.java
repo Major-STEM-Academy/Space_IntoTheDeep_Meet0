@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.hardware.BotCoefficients;
@@ -62,6 +63,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.tuning.TuningOpModes;
  */
 
 @Autonomous(name=" TEST ", group="Robot")
+@Disabled
 public class test extends AutoCommon {
 
     @Override

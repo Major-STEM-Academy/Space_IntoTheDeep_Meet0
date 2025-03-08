@@ -70,171 +70,6 @@ public class BlueLeftV2 extends AutoCommon {
 
     }
 
-    private void sampleOnePlusThree(){
-        // Handle pre-loaded sample
-        rotator.setPosition(0.42);
-        slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.95);
-
-        encoderDrive(0.4,  5,  5, 5.0);
-        strafe_encoder(0.5, 17, 17, 5.0);
-
-        tilt.setPosition(BotCoefficients.TILT_UP);
-        encoderDrive(0.4,  10,  -10, 5.0);
-
-        //tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(500); //2000
-        tilt.setPosition(BotCoefficients.TILT_DOWN);
-        sleep(500); //1000
-
-        slider.setTargetPosition(BotCoefficients.SLIDER_BOTTOM_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.9);
-        //////////////////////////////////////////////////////////////
-        // Get first sample
-        extent.setPosition(0.42);
-        //sleep(1000);
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_DOWN);
-
-        encoderDrive(0.5,  -7,  7, 5.0);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        encoderDrive(0.3,  6,  6, 5.0);
-
-        //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        //sleep(200);
-
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-
-        rotator.setPosition(0.43);
-        extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
-        tilt.setPosition(BotCoefficients.TILT_INIT);
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(700);
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-
-        //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
-
-        rotator.setPosition(0.41);
-        sleep(300);
-        slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.95);
-
-        //tilt.setPosition(BotCoefficients.TILT_UP);
-        tilt.setPosition(0.6);
-
-        encoderDrive(0.5,  7,  -7, 5.0);
-        //strafe_encoder(0.5, -7, -7, 5.0);
-        encoderDrive(0.5,  -6,  -6, 5.0);
-
-        tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(500);
-        tilt.setPosition(BotCoefficients.TILT_DOWN);
-        sleep(500);
-
-        slider.setTargetPosition(BotCoefficients.SLIDER_BOTTOM_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.8);
-
-        /////////////////////////////////////////////////////////////////////
-        //Get second sample
-        extent.setPosition(0.52);
-        //sleep(1000);
-        rotator.setPosition(0.362);
-        encoderDrive(0.5,  -10.5,  10.5, 5.0);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        encoderDrive(0.3,  7,  7, 5.0);
-
-        //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(500);
-
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-
-        rotator.setPosition(0.43);
-        extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
-        tilt.setPosition(BotCoefficients.TILT_INIT);
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(700);
-
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-        //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
-
-        rotator.setPosition(0.41);
-        sleep(300);
-        slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.95);
-
-        tilt.setPosition(0.6);
-
-        encoderDrive(0.5,  10,  -10, 5.0);
-        encoderDrive(0.5,  -7,  -7, 5.0);
-
-        tilt.setPosition(BotCoefficients.TILT_UP);
-        sleep(1000);
-
-        tilt.setPosition(BotCoefficients.TILT_DOWN);
-        sleep(500);
-
-        slider.setTargetPosition(BotCoefficients.SLIDER_BOTTOM_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.8);
-        //encoderDrive(0.5,  12,  -12, 5.0);
-
-        /////////////////////////////////////////////////////////////////////
-        //Get third sample
-        extent.setPosition(0.46);
-        //sleep(1000);
-        rotator.setPosition(0.362);
-        encoderDrive(0.5,  -15,  15, 5.0);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        encoderDrive(0.3,  5,  5, 5.0);
-
-        //intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(200);
-
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-
-        rotator.setPosition(0.43);
-        extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
-        tilt.setPosition(BotCoefficients.TILT_INIT);
-        rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
-        intake.setPosition(BotCoefficients.INTAKE_FORWARD);
-        sleep(700);
-
-        intake.setPosition(BotCoefficients.INTAKE_INIT);
-        //rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_INIT);
-
-        rotator.setPosition(0.41);
-        sleep(300);
-        slider.setTargetPosition(BotCoefficients.SLIDER_TOP_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.95);
-
-        tilt.setPosition(BotCoefficients.TILT_UP);
-
-        encoderDrive(0.5,  10,  -10, 5.0);
-        encoderDrive(0.4,  -4,  -4, 5.0);
-
-        //tilt.setPosition(BotCoefficients.TILT_UP);
-        //sleep(1000);
-        tilt.setPosition(BotCoefficients.TILT_DOWN);
-        sleep(500);
-
-        rotator.setPosition(0.41);
-        slider.setTargetPosition(BotCoefficients.SLIDER_BOTTOM_POSITION);
-        slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slider.setPower(0.8);
-
-        sleep(5000);
-
-    }
 
     private void sampleOnePlusThree_camera(){
         // Handle pre-loaded sample
@@ -283,7 +118,7 @@ public class BlueLeftV2 extends AutoCommon {
 
         rotator.setPosition(0.43);
         extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
+        sleep(700);
         tilt.setPosition(BotCoefficients.TILT_INIT);
         rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
@@ -348,7 +183,7 @@ public class BlueLeftV2 extends AutoCommon {
 
         rotator.setPosition(0.43);
         extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
+        sleep(700);
         tilt.setPosition(BotCoefficients.TILT_INIT);
         rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
@@ -395,7 +230,7 @@ public class BlueLeftV2 extends AutoCommon {
 
         rotator.setPosition(0.43);
         extent.setPosition(BotCoefficients.EXTENT_BACK);
-        sleep(500);
+        sleep(700);
         tilt.setPosition(BotCoefficients.TILT_INIT);
         rotator.setPosition(BotCoefficients.INTAKE_ROTATOR_UP);
         intake.setPosition(BotCoefficients.INTAKE_FORWARD);
@@ -431,7 +266,7 @@ public class BlueLeftV2 extends AutoCommon {
         encoderDrive(0.7,  50,  50, 5.0);
         encoderDrive(0.6,  -30,  30, 5.0);
         tilt.setPosition(BotCoefficients.TILT_UP);
-        encoderDrive(0.5,  -25,  -25, 5.0);
+        encoderDrive(0.3,  -27,  -27, 5.0);
 
         sleep(5000);
     }
